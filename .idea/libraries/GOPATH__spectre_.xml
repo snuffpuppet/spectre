@@ -1,0 +1,35 @@
+<component name="libraryTable">
+  <library name="GOPATH &lt;spectre&gt;">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../../.git" />
+      <root url="file://$PROJECT_DIR$/../../../pizzav3" />
+      <root url="file://$PROJECT_DIR$/../.." />
+      <root url="file://$PROJECT_DIR$/../../../hello" />
+      <root url="file://$PROJECT_DIR$/../../../pizzav2" />
+      <root url="file://$PROJECT_DIR$/../../../Go-OpenGL" />
+      <root url="file://$PROJECT_DIR$/../../../RabbitHello" />
+      <root url="file://$PROJECT_DIR$/../../../pizzav1" />
+      <root url="file://$PROJECT_DIR$/../../../Go-SDL" />
+      <root url="file://$PROJECT_DIR$/../../../gotris" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../../../.git" />
+      <root url="file://$PROJECT_DIR$/../../../pizzav3" />
+      <root url="file://$PROJECT_DIR$/../.." />
+      <root url="file://$PROJECT_DIR$/../../../hello" />
+      <root url="file://$PROJECT_DIR$/../../../pizzav2" />
+      <root url="file://$PROJECT_DIR$/../../../Go-OpenGL" />
+      <root url="file://$PROJECT_DIR$/../../../RabbitHello" />
+      <root url="file://$PROJECT_DIR$/../../../pizzav1" />
+      <root url="file://$PROJECT_DIR$/../../../Go-SDL" />
+      <root url="file://$PROJECT_DIR$/../../../gotris" />
+    </SOURCES>
+    <excluded>
+      <root url="file://$PROJECT_DIR$" />
+      <root url="file://$PROJECT_DIR$/audioBuffer" />
+      <root url="file://$PROJECT_DIR$/audioStream" />
+      <root url="file://$PROJECT_DIR$/audioFingerprint" />
+    </excluded>
+  </library>
+</component>

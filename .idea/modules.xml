@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/audioBuffer/audioBuffer.iml" filepath="$PROJECT_DIR$/audioBuffer/audioBuffer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/audioStream/audioStream.iml" filepath="$PROJECT_DIR$/audioStream/audioStream.iml" />
+      <module fileurl="file://$PROJECT_DIR$/audioFingerprint/acousticfingerprint.iml" filepath="$PROJECT_DIR$/audioFingerprint/acousticfingerprint.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spectre.iml" filepath="$PROJECT_DIR$/spectre.iml" />
+    </modules>
+  </component>
+</project>
