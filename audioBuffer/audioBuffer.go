@@ -2,7 +2,6 @@ package audioBuffer
 
 import (
 	"log"
-	"fmt"
 	"math"
 )
 
@@ -32,13 +31,13 @@ func (b *Block) Size() (size int) {
 	case []float32:
 		size = len(d)
 	default:
-		log.Fatalf("audioBuffer.Size(): Unrecognised buffer data type %v", d)
+		log.Panicf("audioBuffer.Size(): Unrecognised buffer data type %v", d)
 	}
 
 	return
 }
 
-func (b *Block) DataFormat() (string, error) {
+func (b *Block) DataFormat() (string) {
 	var t string
 
 	switch b.buf.(type) {
@@ -47,10 +46,10 @@ func (b *Block) DataFormat() (string, error) {
 	case []float32:
 		t = "float32"
 	default:
-		return "", fmt.Errorf("NewWav: unrecognised buffer format: %v", b.buf)
+		log.Panicf("NewWav: unrecognised buffer format: %v", b.buf)
 	}
 
-	return t, nil
+	return t
 }
 
 func (block *Block) Data() Buffer {
@@ -62,7 +61,7 @@ func (block *Block) SetBuffer(buf Buffer) {
 }
 
 // convert data block to float64 (if needed) and return
-func (block *Block) Float64Data() ([]float64, error) {
+func (block *Block) Float64Data() ([]float64) {
 	var f64 []float64
 
 	switch d := block.buf.(type) {
@@ -77,22 +76,22 @@ func (block *Block) Float64Data() ([]float64, error) {
 			f64[i] = float64(v)
 		}
 	default:
-		return nil, fmt.Errorf("Block.Float64Data: unrecognised buffer data type: %v", d)
+		log.Panicf("Block.Float64Data: unrecognised buffer data type: %v", d)
 	}
-	return f64, nil
+	return f64
 }
 
 // convert data block to int16 (if needed) and return
-func (block *Block) Int16Data() ([]int16, error) {
+func (block *Block) Int16Data() ([]int16) {
 	var i16 []int16
 
 	switch d := block.buf.(type) {
 	case []int16:
 		i16 = d
 	default:
-		return nil, fmt.Errorf("Block.Int16Data: unrecognised buffer data type: %v", d)
+		log.Panicf("Block.Int16Data: unrecognised buffer data type: %v", d)
 	}
-	return i16, nil
+	return i16
 }
 
 func (buf *Block) UpdateReadCount(count int) {

@@ -115,10 +115,7 @@ func ffmpegStartStream(cmd *exec.Cmd) (io.ReadCloser, error) {
 func NewBufferedWav(filename string, buffer audioBuffer.Buffer, sampleRate int) (*Stream, error) {
 	block := audioBuffer.NewBlock(buffer, sampleRate)
 
-	pcmFormat, err := block.DataFormat()
-	if (err != nil) {
-		return nil, err
-	}
+	pcmFormat := block.DataFormat()
 
 	cmd, err := ffmpegCmd(filename, "wav", pcmFormat, sampleRate)
 	if (err != nil) {
@@ -130,17 +127,17 @@ func NewBufferedWav(filename string, buffer audioBuffer.Buffer, sampleRate int) 
 		return nil, err
 	}
 
-	wav, err := wav.New(audio)
+	pcm, err := wav.New(audio)
 	if err != nil {
 		return nil, fmt.Errorf("Opening Wav file: %s", err)
 	}
-	if wav.SampleRate != uint32(sampleRate) {
-		return nil, fmt.Errorf("Wav file has different sample rate (%d) to requested rate (%d)", wav.SampleRate, sampleRate)
+	if pcm.SampleRate != uint32(sampleRate) {
+		return nil, fmt.Errorf("Wav file has different sample rate (%d) to requested rate (%d)", pcm.SampleRate, sampleRate)
 	}
 
-	start := func() error { return nil }
-	read  := func() (*audioBuffer.Block, error) {
-		samples, err := wav.ReadSamples(block.Size())
+	startFn := func() error { return nil }
+	readFn  := func() (*audioBuffer.Block, error) {
+		samples, err := pcm.ReadSamples(block.Size())
 		if err != nil {
 			return nil, err
 		}
@@ -149,7 +146,7 @@ func NewBufferedWav(filename string, buffer audioBuffer.Buffer, sampleRate int) 
 		block.UpdateReadCount(block.Size())
 		return block, nil
 	}
-	close := func() error {
+	closeFn := func() error {
 		audio.Close()
 		return cmd.Wait()
 	}
@@ -158,10 +155,10 @@ func NewBufferedWav(filename string, buffer audioBuffer.Buffer, sampleRate int) 
 		Filename: filename,
 		Buffer: block,
 		blockSize: block.Size(),
-		sampleRate: int(wav.SampleRate),
-		start: start,
-		read:  read,
-		close: close,
+		sampleRate: int(pcm.SampleRate),
+		start: startFn,
+		read:  readFn,
+		close: closeFn,
 	}
 
 	return &stream, nil
@@ -179,12 +176,12 @@ func NewMicrophone(blockSize int, sampleRate int) (*Stream, error) {
 		return nil, err
 	}
 
-	close := func() error {
+	closeFn := func() error {
 		paStream.Close()
 		return portaudio.Terminate()
 	}
 
-	read := func() (*audioBuffer.Block, error) {
+	readFn := func() (*audioBuffer.Block, error) {
 		err := paStream.Read()
 		if err != nil {
 			return block, err
@@ -195,7 +192,7 @@ func NewMicrophone(blockSize int, sampleRate int) (*Stream, error) {
 
 	}
 
-	start := func() (error) {
+	startFn := func() (error) {
 		return paStream.Start()
 	}
 
@@ -204,9 +201,9 @@ func NewMicrophone(blockSize int, sampleRate int) (*Stream, error) {
 		Buffer:     block,
 		blockSize:  block.Size(),
 		sampleRate: sampleRate,
-		start:      start,
-		read:       read,
-		close:      close,
+		start:      startFn,
+		read:       readFn,
+		close:      closeFn,
 	}
 
 	return &stream, nil

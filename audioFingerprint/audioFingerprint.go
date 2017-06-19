@@ -12,10 +12,10 @@ import (
 )
 
 const PWELCH_DATA_POINTS = 1024
-const NUM_CANDIDATES = 3 		// required number of frequency candidates for a fingerprint entry
+const REQUIRED_CANDIDATES = 2 		// required number of frequency candidates for a fingerprint entry
 const LOWER_FREQ_CUTOFF = 1500.0
 const LOWER_POWER_CUTOFF = 0.5
-const TIME_DELTA_THRESHOLD = 0.1	// reqeuired minimum time diff between freq matches to be considered a hit
+const TIME_DELTA_THRESHOLD = 0.2	// required minimum time diff between freq matches to be considered a hit
 
 const (
 	_ = iota
@@ -42,31 +42,30 @@ type Mapping struct {
 	Timestamp   float64
 }
 
+type Fingerprint struct {
+	Hash      []byte
+	Timestamp float64
+}
 
-func pwelchAnalysis(sampleBlock *audioBuffer.Block, sampleRate int) (Pxx, freqs []float64, err error) {
+
+func pwelchAnalysis(sampleBlock *audioBuffer.Block, sampleRate int) (Pxx, freqs []float64) {
 	// 'block' contains our data block, get a spectral analysis of this section of the audio
 	var opts spectral.PwelchOptions // default values are used
 	opts.Noverlap = 0
 	opts.NFFT = PWELCH_DATA_POINTS
 	opts.Scale_off = true
 
-	samples, err := sampleBlock.Float64Data()
-	if (err != nil) {
-		return nil, nil, err
-	}
+	samples := sampleBlock.Float64Data()
 
 	Pxx, freqs = spectral.Pwelch(samples, float64(sampleRate), &opts)
 
 	return
 }
 
-func bespokeAnalysis(sampleBlock *audioBuffer.Block, sampleRate int) (Pxx, freqs []float64, err error) {
+func bespokeAnalysis(sampleBlock *audioBuffer.Block, sampleRate int) (Pxx, freqs []float64) {
 	// 'block' contains our data block, get a spectral analysis of this section of the audio
 
-	samples, err := sampleBlock.Float64Data()
-	if (err != nil) {
-		return nil, nil, err
-	}
+	samples := sampleBlock.Float64Data()
 
 	// construct a slice of complex numbers containing the sample data & imaginary part as 0
 	complexSamples := make([]complex128, len(samples))
@@ -91,7 +90,7 @@ func bespokeAnalysis(sampleBlock *audioBuffer.Block, sampleRate int) (Pxx, freqs
 	return
 }
 
-func getCandidates(freqs, Pxx []float64) ([]candidate, error) {
+func getCandidates(freqs, Pxx []float64) ([]candidate) {
 	candidates := make([]candidate, 0)
 
 	// select only those stronger than the power threshold and higher than the frequency threshold
@@ -105,12 +104,12 @@ func getCandidates(freqs, Pxx []float64) ([]candidate, error) {
 	sort.Sort(sort.Reverse(ByPxx(candidates)))
 
 	var topCandidates []candidate
-	if len(candidates) < NUM_CANDIDATES {
-		topCandidates = candidates
+	if len(candidates) < REQUIRED_CANDIDATES {
+		topCandidates = nil
 	} else {
-		topCandidates = candidates[:NUM_CANDIDATES]
+		topCandidates = candidates[:REQUIRED_CANDIDATES]
 	}
-	return topCandidates, nil
+	return topCandidates
 }
 
 func PrintCandidates(blockId int, blockTime float64, candidates []candidate) {
@@ -124,28 +123,19 @@ func PrintCandidates(blockId int, blockTime float64, candidates []candidate) {
 	fmt.Printf("\t[%4d:%6.2f] %s\n", blockId, blockTime, s)
 }
 
-
-
-func New(sampleBlock *audioBuffer.Block, sampleRate int, optSpectralAnalyser int) ([]byte, []candidate, error) {
-	var err error
+func New(sampleBlock *audioBuffer.Block, sampleRate int, optSpectralAnalyser int) (*Fingerprint, []candidate) {
 	var Pxx, freqs []float64
 	switch optSpectralAnalyser {
 	case SA_PWELCH:
-		Pxx, freqs, err = pwelchAnalysis(sampleBlock, sampleRate)
+		Pxx, freqs = pwelchAnalysis(sampleBlock, sampleRate)
 	case SA_BESPOKE:
-		Pxx, freqs, err = bespokeAnalysis(sampleBlock, sampleRate)
-	}
-	if (err != nil) {
-		return nil, nil, err
+		Pxx, freqs = bespokeAnalysis(sampleBlock, sampleRate)
 	}
 
-	candidates, err := getCandidates(freqs, Pxx)
-	if (err != nil) {
-		return nil, nil, err
-	}
+	candidates := getCandidates(freqs, Pxx)
 
-	if len(candidates) < NUM_CANDIDATES {
-		return nil, nil, nil		// no valid candidates
+	if len(candidates) < REQUIRED_CANDIDATES {
+		return nil, nil	// no valid candidates
 	}
 
 	// Now copy over the ones that we are interested in and populate the hash string
@@ -153,10 +143,10 @@ func New(sampleBlock *audioBuffer.Block, sampleRate int, optSpectralAnalyser int
 	for _, v := range candidates {
 		io.WriteString(hash, fmt.Sprintf("%e", v.Freq))
 	}
-	// Add in the time difference between the samples
 
+	fp := Fingerprint{hash.Sum(nil), sampleBlock.Timestamp}
 
-	return hash.Sum(nil), candidates, nil
+	return &fp, candidates
 }
 
 
