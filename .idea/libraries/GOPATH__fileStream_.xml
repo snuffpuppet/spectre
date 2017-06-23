@@ -27,12 +27,12 @@
     </SOURCES>
     <excluded>
       <root url="file://$PROJECT_DIR$" />
-      <root url="file://$PROJECT_DIR$/audioBuffer" />
-      <root url="file://$PROJECT_DIR$/audioStream" />
+      <root url="file://$PROJECT_DIR$/pcmframe" />
+      <root url="file://$PROJECT_DIR$/pcmstream" />
       <root url="file://$PROJECT_DIR$/bespoksa" />
       <root url="file://$PROJECT_DIR$/fileStream" />
       <root url="file://$PROJECT_DIR$/microphoneStream" />
-      <root url="file://$PROJECT_DIR$/audioFingerprint" />
+      <root url="file://$PROJECT_DIR$/fingerprint" />
     </excluded>
   </library>
 </component>

@@ -5,23 +5,31 @@ import (
 	"fmt"
 	"io"
 	"log"
-	"math"
 	"os"
 	"os/signal"
-	"github.com/snuffpuppet/spectre/audioFingerprint"
-	"github.com/snuffpuppet/spectre/audioStream"
-	"github.com/snuffpuppet/spectre/audioBuffer"
+	"github.com/snuffpuppet/spectre/fingerprint"
+	"github.com/snuffpuppet/spectre/pcmstream"
+	"github.com/snuffpuppet/spectre/pcmframe"
+	"github.com/snuffpuppet/spectre/audiomatcher"
 )
 
 const SAMPLE_RATE = 11025
-const BUFFER_SIZE = 1024
+const BUFFER_SIZE = 4096
 
+func printStatus(fp *fingerprint.Fingerprint, block *pcmframe.Block, verbose bool) {
+	if verbose {
+		header := fmt.Sprintf("[%4d:%6.2f]", block.Id, block.Timestamp)
+		fmt.Printf("%s %s\n", header, fp.Candidates)
+		//fmt.Printf("%s %s\n", header, fp.Transcription)
+		//fmt.Printf("%s -> Key: %v\n\n", header, fp.Key)
+	}
+}
 
-func generateFingerprints(filenames []string, optSpectralAnalyser int, optFormat string, optVerbose bool) (fingerprints map[string]audioFingerprint.Mapping, err error) {
+func generateFingerprints(filenames []string, optSpectralAnalyser int, optFormat string, optVerbose bool) (fingerprints map[string]fingerprint.Mapping, err error) {
 
-	fingerprints = make(map[string]audioFingerprint.Mapping)
+	fingerprints = make(map[string]fingerprint.Mapping)
 
-	var buffer audioBuffer.Buffer
+	var buffer pcmframe.Buffer
 
 	switch optFormat {
 	case "int16":
@@ -35,7 +43,7 @@ func generateFingerprints(filenames []string, optSpectralAnalyser int, optFormat
 
 	for _, filename := range filenames {
 		fmt.Printf("Processing fingerprints for %s...\n", filename)
-		stream, err := audioStream.NewBufferedWav(filename, buffer, SAMPLE_RATE)
+		stream, err := pcmstream.NewBufferedWav(filename, buffer, SAMPLE_RATE)
 		if (err != nil) {
 			return nil, err
 		}
@@ -48,19 +56,18 @@ func generateFingerprints(filenames []string, optSpectralAnalyser int, optFormat
 				}
 				return nil, err
 			}
-			fp, candidates := audioFingerprint.New(block, SAMPLE_RATE, optSpectralAnalyser)
+			fp := fingerprint.New(block, SAMPLE_RATE, optSpectralAnalyser)
 			if (err != nil) {
 				return nil, err
 			}
 			if fp != nil {
-				if _, ok := fingerprints[string(fp.Hash)]; ok {
+				if _, ok := fingerprints[string(fp.Key)]; ok {
 					clashCount++
 				}
-				fingerprints[string(fp.Hash)] = audioFingerprint.Mapping{filename, block.Timestamp}
+				fingerprints[string(fp.Key)] = fingerprint.Mapping{filename, block.Timestamp}
 
-			}
-			if optVerbose {
-				audioFingerprint.PrintCandidates(block.Id, block.Timestamp, candidates)
+				printStatus(fp, block, optVerbose)
+
 			}
 		}
 		stream.Close()
@@ -70,105 +77,11 @@ func generateFingerprints(filenames []string, optSpectralAnalyser int, optFormat
 	return fingerprints, nil
 }
 
-type matchedTimestamp struct {
-	mic  float64
-	song float64
-}
-
-type AudioMatcher struct {
-	FingerprintLib map[string]audioFingerprint.Mapping
-	FrequencyHits  map[string][]matchedTimestamp
-}
-
-func NewAudioMatcher(mappings map[string]audioFingerprint.Mapping) (*AudioMatcher){
-	am := AudioMatcher{
-		FrequencyHits: make(map[string][]matchedTimestamp),
-		FingerprintLib: mappings,
-	}
-	return &am
-}
-
-func (matcher *AudioMatcher) register(fp *audioFingerprint.Fingerprint) {
-	fpm, ok := matcher.FingerprintLib[string(fp.Hash)]
-	if !ok {
-		return
-	}
-	// we have  frequency match, now add the match to the list
-	timestamps, ok := matcher.FrequencyHits[fpm.Filename]
-	if !ok {
-		timestamps = make([]matchedTimestamp, 1)
-	}
-
-	matcher.FrequencyHits[fpm.Filename] = append(timestamps, matchedTimestamp{mic: fp.Timestamp, song: fpm.Timestamp})
-	fmt.Printf("Frequency match for %s at %.2f\n", fpm.Filename, fpm.Timestamp)
-}
-
-type audioHit struct {
-	filename string
-	hitCount int
-	totalHitCount int
-}
-
-type audioHits []audioHit
-
-func (a audioHits) String() (s string) {
-	s = ""
-	for _, v := range a {
-		pc := float64(v.hitCount) / float64(v.totalHitCount) * 100.0
-		s += fmt.Sprintf("%3d/%3d (%5.2f) - %s\n", v.hitCount, v.totalHitCount, pc, v.filename)
-	}
-
-	return
-}
-
-func (matcher *AudioMatcher) getHits() (orderedHits audioHits) {
-	hits := make(map[string]int)
-	totalHitcount := 0
-
-	// Check through our frequency hit list to see if the time deltas match those of the file
-	for filename, ts := range matcher.FrequencyHits {
-		if len(ts) >1 {
-			for i := 1; i < len(ts); i++ {
-				songTimeDelta := ts[i].song - ts[i-1].song
-				micTimeDelta := ts[i].mic - ts[i-1].mic
-
-				if  math.Abs(songTimeDelta - micTimeDelta) < audioFingerprint.TIME_DELTA_THRESHOLD {
-					hits[filename]++
-					totalHitcount++
-					log.Printf("Time Delta match for %s (%d/%d)\n", filename, hits[filename], totalHitcount)
-				}
-			}
-		}
-	}
-
-	// Hits calculated, now provide a sorted list to the caller
-	orderedHits = audioHits(make([]audioHit, 0))
-	for filename, hitCount := range hits {
-		hit := audioHit{filename, hitCount, totalHitcount}
-		inserted := false
-		if len(orderedHits) > 0 {
-			for i := 0; i < len(orderedHits); i++ {
-				if hit.hitCount > orderedHits[i].hitCount {
-					fmt.Println(orderedHits[i])
-					orderedHits = append(orderedHits[:i], append([]audioHit{hit}, orderedHits[i:]...)...)
-					inserted = true
-					break
-				}
-			}
-		}
-		if !inserted {
-			orderedHits = append(orderedHits, hit)
-		}
-	}
-
-	return
-}
-
-func listen(audioMappings map[string]audioFingerprint.Mapping, optSpectralAnalyser int, optVerbose bool) error {
+func listen(audioMappings map[string]fingerprint.Mapping, optSpectralAnalyser int, optVerbose bool) error {
 	sig := make(chan os.Signal, 1)
 	signal.Notify(sig, os.Interrupt, os.Kill)
 
-	stream, err := audioStream.NewMicrophone(BUFFER_SIZE, SAMPLE_RATE)
+	stream, err := pcmstream.NewMicrophone(BUFFER_SIZE, SAMPLE_RATE)
 	if (err != nil) {
 		return err
 	}
@@ -179,28 +92,26 @@ func listen(audioMappings map[string]audioFingerprint.Mapping, optSpectralAnalys
 
 	fmt.Printf("Listening for %d fingerprints.  Press Ctrl-C to stop\n", len(audioMappings))
 
-	audioMatcher := NewAudioMatcher(audioMappings)
+	matcher := audiomatcher.New(audioMappings)
 
 	for {
 		block, err := stream.ReadBlock()
 		if err != nil {
 			log.Fatalf("Error reading microphone: %s", err)
 		}
-		fingerprint, candidates := audioFingerprint.New(block, SAMPLE_RATE, optSpectralAnalyser)
+		fp := fingerprint.New(block, SAMPLE_RATE, optSpectralAnalyser)
 
-		if fingerprint == nil {
+		if fp == nil {
 			continue
 		}
 
-		if optVerbose {
-			audioFingerprint.PrintCandidates(block.Id, block.Timestamp, candidates)
-		}
+		printStatus(fp, block, optVerbose)
 
-		audioMatcher.register(fingerprint)
+		matcher.Register(fp)
 
 		// Check every second to see if they are certain enough to be a match
 		if block.Id % 10 == 0 {
-			hits := audioMatcher.getHits()
+			hits := matcher.GetHits()
 			if len(hits) > 0 {
 				fmt.Println(hits)
 			}
@@ -231,9 +142,9 @@ func main() {
 
 	switch {
 	case optBespoke:
-		optSpectralAnalyser = audioFingerprint.SA_BESPOKE
+		optSpectralAnalyser = fingerprint.SA_BESPOKE
 	case optPWelch:
-		optSpectralAnalyser = audioFingerprint.SA_PWELCH
+		optSpectralAnalyser = fingerprint.SA_PWELCH
 	}
 
 	if (len(flag.Args()) == 0) {

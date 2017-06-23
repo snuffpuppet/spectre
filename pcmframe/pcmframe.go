@@ -1,4 +1,4 @@
-package audioBuffer
+package pcmframe
 
 import (
 	"log"

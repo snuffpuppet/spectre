@@ -2,35 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1bfa5838-8f17-4990-810f-3996b2b312bf" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../Go-OpenGL" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../Go-SDL" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../cryptix/wav" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../go-sql-driver/mysql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../gordonklaus/portaudio" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../heroku/go-getting-started" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../kardianos/govendor" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../mjibson/go-dsp" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../streadway/amqp" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../tcolgate/mp3" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../gotris" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../RabbitHello/new_task.go" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../RabbitHello/recv.go" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../RabbitHello/send.go" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../RabbitHello/worker.go" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../dejago/.idea/libraries/GOPATH__dejago_.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../dejago/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../dejago/.idea/workspace.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../dejago/dejago/dejago.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../dejago/spectre/.idea/.name" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../dejago/spectre/.idea/libraries/GOPATH__dejago_.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../dejago/spectre/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../dejago/spectre/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../dejago/spectre/.idea/workspace.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../dejago/spectre/dejago.go" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../dejago/spectre/dejago.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../dejago/spectre/fingerprint.go" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../dejago/spectre/spectral.go" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../dejago/spectre/spectre.go" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/GOPATH__audioBuffer_.xml" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/GOPATH__audioStream_.xml" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/GOPATH__audiofingerprint_.xml" />
@@ -42,15 +13,26 @@
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/audioBuffer/audioBuffer.go" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/audioBuffer/audioBuffer.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/audioFingerprint/audioFingerprint.go" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/audioFingerprint/audiofingerprint.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/audioStream/audioStream.go" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/audioStream/audioStream.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/spectre.go" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/audiomatcher/audiomatcher.go" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/spectre.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../hello/hello.go" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/audioBuffer/audioBuffer.go" afterPath="$PROJECT_DIR$/pcmframe/pcmframe.go" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/audioBuffer/audioBuffer.iml" afterPath="$PROJECT_DIR$/pcmframe/pcmframe.iml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/audioFingerprint/audioFingerprint.go" afterPath="$PROJECT_DIR$/fingerprint/fingerprint.go" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/audioFingerprint/audiofingerprint.iml" afterPath="$PROJECT_DIR$/fingerprint/audiofingerprint.iml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/audioStream/audioStream.go" afterPath="$PROJECT_DIR$/pcmstream/pcmstream.go" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/audioStream/audioStream.iml" afterPath="$PROJECT_DIR$/pcmstream/pcmstream.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/GOPATH__audioBuffer_.xml" afterPath="$PROJECT_DIR$/.idea/libraries/GOPATH__audioBuffer_.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/GOPATH__audioStream_.xml" afterPath="$PROJECT_DIR$/.idea/libraries/GOPATH__audioStream_.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/GOPATH__audiofingerprint_.xml" afterPath="$PROJECT_DIR$/.idea/libraries/GOPATH__audiofingerprint_.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/GOPATH__bespoksa_.xml" afterPath="$PROJECT_DIR$/.idea/libraries/GOPATH__bespoksa_.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/GOPATH__fileStream_.xml" afterPath="$PROJECT_DIR$/.idea/libraries/GOPATH__fileStream_.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/GOPATH__fingerprint_.xml" afterPath="$PROJECT_DIR$/.idea/libraries/GOPATH__fingerprint_.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/GOPATH__microphoneStream_.xml" afterPath="$PROJECT_DIR$/.idea/libraries/GOPATH__microphoneStream_.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/GOPATH__spectre_.xml" afterPath="$PROJECT_DIR$/.idea/libraries/GOPATH__spectre_.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/spectre.go" afterPath="$PROJECT_DIR$/spectre.go" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -66,49 +48,61 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="spectre.go" pinned="false" current-in-tab="true">
+      <file leaf-file-name="spectre.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/spectre.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="298">
-              <caret line="46" column="32" lean-forward="true" selection-start-line="46" selection-start-column="32" selection-end-line="46" selection-end-column="32" />
+            <state relative-caret-position="-1549">
+              <caret line="13" column="1" lean-forward="true" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
               <folding>
-                <element signature="e#14#222#0" expanded="true" />
+                <element signature="e#14#251#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="audioFingerprint.go" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/audioFingerprint/audioFingerprint.go">
+      <file leaf-file-name="audiomatcher.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/audiomatcher/audiomatcher.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-528">
-              <caret line="90" column="14" lean-forward="false" selection-start-line="90" selection-start-column="14" selection-end-line="90" selection-end-column="14" />
+            <state relative-caret-position="269">
+              <caret line="45" column="53" lean-forward="false" selection-start-line="45" selection-start-column="53" selection-end-line="45" selection-end-column="53" />
               <folding>
-                <element signature="e#26#203#0" expanded="true" />
+                <element signature="e#22#93#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="audioStream.go" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/audioStream/audioStream.go">
+      <file leaf-file-name="fingerprint.go" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/fingerprint/fingerprint.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="147">
-              <caret line="115" column="0" lean-forward="false" selection-start-line="115" selection-start-column="0" selection-end-line="115" selection-end-column="0" />
+            <state relative-caret-position="1115">
+              <caret line="261" column="18" lean-forward="false" selection-start-line="261" selection-start-column="18" selection-end-line="261" selection-end-column="18" />
               <folding>
-                <element signature="e#21#181#0" expanded="true" />
+                <element signature="e#21#235#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="audioBuffer.go" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/audioBuffer/audioBuffer.go">
+      <file leaf-file-name="pcmstream.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pcmstream/pcmstream.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="885">
-              <caret line="59" column="34" lean-forward="false" selection-start-line="59" selection-start-column="34" selection-end-line="59" selection-end-column="34" />
+            <state relative-caret-position="2745">
+              <caret line="183" column="38" lean-forward="false" selection-start-line="183" selection-start-column="38" selection-end-line="183" selection-end-column="38" />
               <folding>
-                <element signature="e#21#53#0" expanded="true" />
+                <element signature="e#19#176#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pcmframe.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pcmframe/pcmframe.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-145">
+              <caret line="0" column="16" lean-forward="false" selection-start-line="0" selection-start-column="16" selection-end-line="0" selection-end-column="16" />
+              <folding>
+                <element signature="e#18#43#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -119,8 +113,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Go File" />
         <option value="Go Application" />
+        <option value="Go File" />
       </list>
     </option>
   </component>
@@ -135,13 +129,19 @@
       <find>DataBlock</find>
       <find>.Secs</find>
       <find>file</find>
-      <find>audioBuffer</find>
       <find>sampleRate</find>
       <find>getting</find>
       <find>listen</find>
       <find>Block</find>
-      <find>NewBlock</find>
       <find>Stream</find>
+      <find>NewBlock</find>
+      <find>audioBuffer</find>
+      <find>audioStream</find>
+      <find>fmt</find>
+      <find>printC</find>
+      <find>optVer</find>
+      <find>Transcription</find>
+      <find>optVerb</find>
     </findStrings>
     <replaceStrings>
       <replace>AudioBuffer.Block</replace>
@@ -154,13 +154,14 @@
       <replace>Block</replace>
       <replace>audioStream</replace>
       <replace>.Timestamp</replace>
-      <replace>audioBuffer.NewBlock</replace>
       <replace>audioBuffer.Block</replace>
       <replace>audioStream.Stream</replace>
+      <replace>audioBuffer.NewBlock</replace>
+      <replace>pcmframe</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GradleLocalSettings">
     <option name="externalProjectsViewState">
@@ -170,15 +171,18 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/fingerprint/fingerprint.go" />
         <option value="$PROJECT_DIR$/acousticFingerprint/acousticFingerprint.go" />
         <option value="$PROJECT_DIR$/fileStream/fileStream.go" />
         <option value="$PROJECT_DIR$/microphoneStream/microphoneStream.go" />
-        <option value="$PROJECT_DIR$/audioBuffer/audioBuffer.go" />
-        <option value="$PROJECT_DIR$/audioStream/audioStream.go" />
         <option value="$PROJECT_DIR$/bespokesa.go" />
+        <option value="$PROJECT_DIR$/audioBuffer/audioBuffer.go" />
         <option value="$PROJECT_DIR$/audioFingerprint/audioFingerprint.go" />
+        <option value="$PROJECT_DIR$/audioStream/audioStream.go" />
+        <option value="$PROJECT_DIR$/pcmframe/pcmframe.go" />
+        <option value="$PROJECT_DIR$/pcmstream/pcmstream.go" />
+        <option value="$PROJECT_DIR$/audiomatcher/audiomatcher.go" />
         <option value="$PROJECT_DIR$/spectre.go" />
+        <option value="$PROJECT_DIR$/fingerprint/fingerprint.go" />
       </list>
     </option>
   </component>
@@ -224,7 +228,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="audioStream" />
+              <option name="myItemId" value="pcmstream" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -238,7 +242,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="audioFingerprint" />
+              <option name="myItemId" value="pcmframe" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -252,7 +256,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="audioBuffer" />
+              <option name="myItemId" value="fingerprint" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -268,8 +272,9 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="DefaultGoTemplateProperty" value="Go Application" />
+    <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="FullScreen" value="true" />
+    <property name="GO_FMT" value="false" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -295,7 +300,7 @@
     <configuration default="false" name="Build spectre.go and run" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true">
       <module name="spectre" />
       <working_directory value="$PROJECT_DIR$" />
-      <parameters value="-verbose -listen audio/Brad-Sucks--Total-Breakdown.mp3" />
+      <parameters value="-pwelch -verbose -listen audio/Brad-Sucks--Total-Breakdown.mp3" />
       <filePath value="$PROJECT_DIR$/spectre.go" />
       <kind value="FILE" />
       <method />
@@ -611,6 +616,14 @@
       <option name="presentableId" value="Default" />
       <updated>1496810012648</updated>
     </task>
+    <task id="LOCAL-00001" summary="audioMatcher to encapsulate fingerprint matching">
+      <created>1497872163486</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1497872163486</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -620,12 +633,13 @@
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2890411" sideWeight="0.509693" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2890411" sideWeight="0.49030694" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2890411" sideWeight="0.49030694" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.49353796" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -649,6 +663,10 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="audioMatcher to encapsulate fingerprint matching" />
+    <option name="LAST_COMMIT_MESSAGE" value="audioMatcher to encapsulate fingerprint matching" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
     <watches-manager />
@@ -663,7 +681,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#14#222#0" expanded="true" />
+            <element signature="e#14#251#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -684,26 +702,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/audioBuffer/audioBuffer.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="885">
-          <caret line="59" column="34" lean-forward="false" selection-start-line="59" selection-start-column="34" selection-end-line="59" selection-end-column="34" />
-          <folding>
-            <element signature="e#21#53#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/audioStream/audioStream.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="115" column="0" lean-forward="false" selection-start-line="115" selection-start-column="0" selection-end-line="115" selection-end-column="0" />
-          <folding>
-            <element signature="e#21#181#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/bespokesa.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -712,22 +710,52 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/audioFingerprint/audioFingerprint.go">
+    <entry file="file://$PROJECT_DIR$/pcmframe/pcmframe.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-528">
-          <caret line="90" column="14" lean-forward="false" selection-start-line="90" selection-start-column="14" selection-end-line="90" selection-end-column="14" />
+        <state relative-caret-position="-145">
+          <caret line="0" column="16" lean-forward="false" selection-start-line="0" selection-start-column="16" selection-end-line="0" selection-end-column="16" />
           <folding>
-            <element signature="e#26#203#0" expanded="true" />
+            <element signature="e#18#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pcmstream/pcmstream.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2745">
+          <caret line="183" column="38" lean-forward="false" selection-start-line="183" selection-start-column="38" selection-end-line="183" selection-end-column="38" />
+          <folding>
+            <element signature="e#19#176#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/audiomatcher/audiomatcher.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="269">
+          <caret line="45" column="53" lean-forward="false" selection-start-line="45" selection-start-column="53" selection-end-line="45" selection-end-column="53" />
+          <folding>
+            <element signature="e#22#93#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/spectre.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="46" column="32" lean-forward="true" selection-start-line="46" selection-start-column="32" selection-end-line="46" selection-end-column="32" />
+        <state relative-caret-position="-1549">
+          <caret line="13" column="1" lean-forward="true" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
           <folding>
-            <element signature="e#14#222#0" expanded="true" />
+            <element signature="e#14#251#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fingerprint/fingerprint.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1115">
+          <caret line="261" column="18" lean-forward="false" selection-start-line="261" selection-start-column="18" selection-end-line="261" selection-end-column="18" />
+          <folding>
+            <element signature="e#21#235#0" expanded="true" />
           </folding>
         </state>
       </provider>

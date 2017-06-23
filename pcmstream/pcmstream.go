@@ -1,11 +1,11 @@
-package audioStream
+package pcmstream
 
 import (
 	"os/exec"
 	"github.com/mjibson/go-dsp/wav"
 	"io"
 	"github.com/gordonklaus/portaudio"
-	"github.com/snuffpuppet/spectre/audioBuffer"
+	"github.com/snuffpuppet/spectre/pcmframe"
 	"fmt"
 	"strconv"
 )
@@ -14,12 +14,12 @@ import (
  * audioStream
  */
 type starter func() error
-type reader  func() (*audioBuffer.Block, error)
+type reader  func() (*pcmframe.Block, error)
 type closer  func() error
 
 type Stream struct {
 	Filename   string
-	Buffer     *audioBuffer.Block
+	Buffer     *pcmframe.Block
 	blockSize  int
 	sampleRate int
 	start	   starter	// function with closure to start the stream running (if needed)
@@ -31,7 +31,7 @@ func (f *Stream) Close() (err error) {
 	return f.close()
 }
 
-func (f *Stream) ReadBlock() (buf *audioBuffer.Block, err error) {
+func (f *Stream) ReadBlock() (buf *pcmframe.Block, err error) {
 	return f.read()
 }
 
@@ -112,8 +112,8 @@ func ffmpegStartStream(cmd *exec.Cmd) (io.ReadCloser, error) {
 	return audio, nil
 }
 
-func NewBufferedWav(filename string, buffer audioBuffer.Buffer, sampleRate int) (*Stream, error) {
-	block := audioBuffer.NewBlock(buffer, sampleRate)
+func NewBufferedWav(filename string, buffer pcmframe.Buffer, sampleRate int) (*Stream, error) {
+	block := pcmframe.NewBlock(buffer, sampleRate)
 
 	pcmFormat := block.DataFormat()
 
@@ -136,7 +136,7 @@ func NewBufferedWav(filename string, buffer audioBuffer.Buffer, sampleRate int) 
 	}
 
 	startFn := func() error { return nil }
-	readFn  := func() (*audioBuffer.Block, error) {
+	readFn  := func() (*pcmframe.Block, error) {
 		samples, err := pcm.ReadSamples(block.Size())
 		if err != nil {
 			return nil, err
@@ -169,7 +169,7 @@ func NewMicrophone(blockSize int, sampleRate int) (*Stream, error) {
 	portaudio.Initialize()
 
 	buffer := make([]float32, blockSize)
-	block := audioBuffer.NewBlock(buffer, sampleRate)
+	block := pcmframe.NewBlock(buffer, sampleRate)
 
 	paStream, err := portaudio.OpenDefaultStream(1, 0, float64(sampleRate), blockSize, buffer)
 	if err != nil {
@@ -181,7 +181,7 @@ func NewMicrophone(blockSize int, sampleRate int) (*Stream, error) {
 		return portaudio.Terminate()
 	}
 
-	readFn := func() (*audioBuffer.Block, error) {
+	readFn := func() (*pcmframe.Block, error) {
 		err := paStream.Read()
 		if err != nil {
 			return block, err
