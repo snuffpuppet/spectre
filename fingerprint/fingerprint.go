@@ -2,23 +2,20 @@ package fingerprint
 
 import (
 	_ "crypto/sha1"
-	"github.com/mjibson/go-dsp/spectral"
 	"fmt"
 	"sort"
-	_ "io"
-	"github.com/snuffpuppet/spectre/pcmframe"
-	"github.com/mjibson/go-dsp/fft"
-	"math/cmplx"
+	"github.com/snuffpuppet/spectre/pcm"
+	"github.com/snuffpuppet/spectre/analysis"
 	"math"
 	"log"
 	"crypto/sha1"
 	"io"
 )
 
-const PWELCH_DATA_POINTS = 1024
 const REQUIRED_CANDIDATES = 4 		// required number of frequency candidates for a fingerprint entry
-const LOWER_FREQ_CUTOFF = 1400.0
-const LOWER_POWER_CUTOFF = 0.5
+const LOWER_FREQ_CUTOFF = 0.0		// Lowest frequency acceptable for matching
+//const LOWER_POWER_CUTOFF = 0.5
+const LOWER_POWER_CUTOFF = 100		// Power levels below this amount are ignored for matching
 const TIME_DELTA_THRESHOLD = 0.2	// required minimum time diff between freq matches to be considered a hit
 
 const (
@@ -29,7 +26,8 @@ const (
 
 
 /*
- * Spectral Analysis
+ * Spectral Analysis and fingerprinting:
+ *
  */
 type candidate struct { Freq float64
 			Pxx float64
@@ -54,11 +52,13 @@ func (a ByFreq) Len() int           { return len(a) }
 func (a ByFreq) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a ByFreq) Less(i, j int) bool { return a[i].Freq < a[j].Freq }
 
+// The data that the fingerprint maps to
 type Mapping struct {
 	Filename    string
 	Timestamp   float64
 }
 
+// Fingerprint info on a block of audio data
 type Fingerprint struct {
 	Key           []byte
 	Timestamp     float64
@@ -66,49 +66,8 @@ type Fingerprint struct {
 	Transcription Transcription
 }
 
-
-func pwelchAnalysis(sampleBlock *pcmframe.Block, sampleRate int) (Pxx, freqs []float64) {
-	// 'block' contains our data block, get a spectral analysis of this section of the audio
-	var opts spectral.PwelchOptions // default values are used
-	opts.Noverlap = 512
-	opts.NFFT = PWELCH_DATA_POINTS
-	opts.Scale_off = false
-
-	samples := sampleBlock.Float64Data()
-
-	Pxx, freqs = spectral.Pwelch(samples, float64(sampleRate), &opts)
-
-	return
-}
-
-func bespokeAnalysis(sampleBlock *pcmframe.Block, sampleRate int) (Pxx, freqs []float64) {
-	// 'block' contains our data block, get a spectral analysis of this section of the audio
-
-	samples := sampleBlock.Float64Data()
-
-	// construct a slice of complex numbers containing the sample data & imaginary part as 0
-	complexSamples := make([]complex128, len(samples))
-	for i, v := range samples {
-		complexSamples[i] = complex(float64(v), 0.0)
-	}
-
-	fftResults := fft.FFT(complexSamples)
-
-	l2 := int(float64(len(fftResults)) / 2.0 + 0.5)  // round to nearest integer
-	fftRelevent := fftResults[1:l2]
-
-	freqs = make([]float64, len(fftRelevent))
-	Pxx = make([]float64, len(fftRelevent))
-
-	maxFreq := float64(sampleRate) / 2.0
-	for i, v := range fftRelevent {
-		Pxx[i] = cmplx.Abs(v)
-		freqs[i] = float64(i) / float64(l2) * maxFreq
-	}
-
-	return
-}
-
+// For the Chroma identification method of matching:
+// ref: http://musicweb.ucsd.edu/~sdubnov/CATbox/Reader/ThumbnailingMM05.pdf
 const (
 	A_NOTE = iota
 	AS_NOTE = iota
@@ -181,6 +140,7 @@ func freqNote(freq float64) int {
 	return n
 }
 
+// A bucket of frequencies that make up a musical note
 type Chroma struct {
 	Note     note
 	Freq     float64
@@ -198,7 +158,16 @@ func (t Transcription) String() string {
 	return s
 }
 
+// Apply an approximation to the frequency to help with inacuracies with matching later
+func fuzzyFreq(f float64) float64 {
+	return float64(int(f/10 + 0.5)*10)
+	//fuzzyFreq -= fuzzyFreq%2
+
+}
+
+// Convert the frequency/power data into buckets of musical notes based on strength of signal
 func transcribe(freqs, Pxx []float64) (t Transcription) {
+	chromaCount := 0
 	t = make([]Chroma, MAX_NOTE)
 	for i, v := range freqs {
 		n := freqNote(v)
@@ -208,6 +177,7 @@ func transcribe(freqs, Pxx []float64) (t Transcription) {
 				t[n].Note = note(n)
 				t[n].Freq = fuzzyFreq(v)
 				t[n].Strength = Pxx[i]
+				chromaCount++
 			} else {
 				//fmt.Printf("*** Rejected: %f(%.2f)\n", fuzzyFreq(v), Pxx[i])
 			}
@@ -215,9 +185,49 @@ func transcribe(freqs, Pxx []float64) (t Transcription) {
 
 	}
 
+	if chromaCount == 0 {
+		t = nil
+	}
+
 	return
 }
 
+// Generate a fingerprint based on the musical transcription of the frequencies in the audio frame
+func audioKey(t Transcription) (key []byte) {
+	// The Powerkey method uses a scaled strength of each of the 12 notes to generate the key
+	// The frequency hash method uses the strongest frequencies for each of the notes to create a hash
+	optPowerKey := true
+
+	if t == nil {
+		return nil
+	}
+
+	key = make([]byte, len(t))
+
+	maxPxx := 0.0
+	if optPowerKey {
+		for _, v := range t {
+			if v.Strength > maxPxx {
+				maxPxx = v.Strength
+			}
+		}
+		for i, v := range t {
+			key[i] = byte(int(v.Strength/maxPxx * 8.0 + 0.5))
+		}
+	} else {
+
+		hash := sha1.New()
+
+		for _, v := range t {
+			io.WriteString(hash, fmt.Sprintf("%e", v.Freq))
+		}
+
+		key = hash.Sum(nil)
+	}
+	return
+}
+
+// return te strongest (REQUIRED_CANDIDATES) frequencies in the frequency data
 func getTopCandidates(freqs, Pxx []float64) (candidates) {
 	candidates := make([]candidate, 0)
 
@@ -246,6 +256,8 @@ func getTopCandidates(freqs, Pxx []float64) (candidates) {
 	return topCandidates
 }
 
+// Use a basic frequency banding method for classifying frequencies and choosing candidates for the fingerprint
+// Return the strongest frequency in each of four bands ordered by strength
 func getBandedCandidates(freqs, Pxx []float64) (candidates) {
 
 	candidates := make([]candidate, 0)
@@ -297,47 +309,50 @@ func PrintCandidates(blockId int, blockTime float64, candidates []candidate) {
 }
 */
 
-func fuzzyFreq(f float64) float64 {
-	return float64(int(f/10 + 0.5)*10)
-	//fuzzyFreq -= fuzzyFreq%2
+// log some frequency distribution data for the given spectrum
+func logSamples(verbose bool, freqs, Pxx []float64) {
+	var top, bottom, avg, topf, bottomf float64
+	var count int
 
-}
+	if !verbose {
+		return
+	}
 
-func audioKey(t Transcription) (key []byte) {
-	// For the moment just use a byte for each one and a rnge of 0-16
-	maxPxx := 0.0
-	//key = make([]byte, 12)
-
-	for _, v := range t {
-		if v.Strength > maxPxx {
-			maxPxx = v.Strength
+	bottom = -1.0
+	for i, x := range Pxx {
+		if x > LOWER_POWER_CUTOFF && freqs[i] > LOWER_FREQ_CUTOFF {
+			if x > top {
+				top = x
+				topf = freqs[i]
+			}
+			if x < bottom {
+				bottom = x
+				bottomf = freqs[i]
+			}
+			avg += x
+			count++
 		}
 	}
 
-	if maxPxx < LOWER_POWER_CUTOFF {
-		return nil
+	if count > 0 {
+		log.Printf("#S:%3d T: [%7.1f] %7.1f\tB: [%7.1f] %7.1f\tA: %7.1f", count, topf, top, bottomf, bottom, avg / float64(len(Pxx)))
 	}
-
-	hash := sha1.New()
-
-	for _, v := range t {
-		//key[i] = byte(int(v/maxPxx * 8.0 + 0.5))
-		io.WriteString(hash, fmt.Sprintf("%e", v.Freq))
-	}
-	key = hash.Sum(nil)
-	return
 }
 
-func New(sampleBlock *pcmframe.Block, sampleRate int, optSpectralAnalyser int) (*Fingerprint) {
+func New(sampleBlock *pcm.Buffer, sampleRate int, optSpectralAnalyser int, optVerbose bool) (*Fingerprint) {
 	var Pxx, freqs []float64
 	switch optSpectralAnalyser {
 	case SA_PWELCH:
-		Pxx, freqs = pwelchAnalysis(sampleBlock, sampleRate)
+		Pxx, freqs = analysis.PwelchAnalysis(sampleBlock, sampleRate)
 	case SA_BESPOKE:
-		Pxx, freqs = bespokeAnalysis(sampleBlock, sampleRate)
+		Pxx, freqs = analysis.OverlapAnalysis(sampleBlock, sampleRate)
+	default:
+		log.Panicf("Unrecognised spectral analyser %d\n", optSpectralAnalyser)
 	}
 
-	optMethod := "freqbands" // "transcribe", "topfreq"
+	optMethod :=  "transcribe" //"freqbands" // "transcribe", "topfreq"
+
+	//logSamples(optVerbose, freqs, Pxx)
 
 	var key []byte
 	var fp Fingerprint
@@ -345,10 +360,10 @@ func New(sampleBlock *pcmframe.Block, sampleRate int, optSpectralAnalyser int) (
 	switch (optMethod) {
 	case "transcribe":
 		transcription := transcribe(freqs, Pxx)
-		//fmt.Println(trans)
+		//log.Printf("fp transscription: %s\n", transcription)
 
 		key := audioKey(transcription)
-		//fmt.Println(key)
+		//log.Printf("fp key: %s\n", key)
 
 		if key == nil {
 			return nil
@@ -401,6 +416,8 @@ func New(sampleBlock *pcmframe.Block, sampleRate int, optSpectralAnalyser int) (
 			Candidates: candidates,
 			Transcription: nil,
 		}
+	default:
+		log.Panicf("Fingerprint: Unknown key generaion method: %s", optMethod)
 	}
 
 

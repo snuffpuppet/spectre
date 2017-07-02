@@ -1,25 +1,29 @@
-package pcmstream
+package pcm
 
 import (
 	"os/exec"
 	"github.com/mjibson/go-dsp/wav"
 	"io"
 	"github.com/gordonklaus/portaudio"
-	"github.com/snuffpuppet/spectre/pcmframe"
 	"fmt"
 	"strconv"
+	//"log"
 )
 
 /*
- * audioStream
+ * audioStream:
+ * Provide abstraction over an audio stream source.
+ * File streams are provided via ffmpeg decoding and microphone streams are provided through the portaudio library
+ * The Stream struct abstracts the differences
  */
+
 type starter func() error
-type reader  func() (*pcmframe.Block, error)
+type reader  func() (*Buffer, error)
 type closer  func() error
 
 type Stream struct {
 	Filename   string
-	Buffer     *pcmframe.Block
+	Buffer     *Buffer
 	blockSize  int
 	sampleRate int
 	start	   starter	// function with closure to start the stream running (if needed)
@@ -31,7 +35,7 @@ func (f *Stream) Close() (err error) {
 	return f.close()
 }
 
-func (f *Stream) ReadBlock() (buf *pcmframe.Block, err error) {
+func (f *Stream) ReadFrame() (buf *Buffer, err error) {
 	return f.read()
 }
 
@@ -50,9 +54,9 @@ func ffmpegCmd(filename, containerType, pcmDataType string, sampleRate int) (*ex
 	ffmpegDataType := ""  // internal data type for ffmpeg to use for PCM data
 
 	switch pcmDataType {
-	case "int16":
+	case FMT_INT16:
 		ffmpegDataType = "s16le"
-	case "float32":
+	case FMT_FLOAT32:
 		ffmpegDataType = "f32le"
 	default:
 		return nil, fmt.Errorf("ffmpegCmd: Unrecognised PCM format: %s", pcmDataType)
@@ -112,10 +116,10 @@ func ffmpegStartStream(cmd *exec.Cmd) (io.ReadCloser, error) {
 	return audio, nil
 }
 
-func NewBufferedWav(filename string, buffer pcmframe.Buffer, sampleRate int) (*Stream, error) {
-	block := pcmframe.NewBlock(buffer, sampleRate)
+func NewWavStream(filename string, sampleRate int) (*Stream, error) {
+	buf := NewIntBuffer(sampleRate)
 
-	pcmFormat := block.DataFormat()
+	pcmFormat := buf.DataFormat()
 
 	cmd, err := ffmpegCmd(filename, "wav", pcmFormat, sampleRate)
 	if (err != nil) {
@@ -127,24 +131,31 @@ func NewBufferedWav(filename string, buffer pcmframe.Buffer, sampleRate int) (*S
 		return nil, err
 	}
 
-	pcm, err := wav.New(audio)
+	wstream, err := wav.New(audio)
 	if err != nil {
 		return nil, fmt.Errorf("Opening Wav file: %s", err)
 	}
-	if pcm.SampleRate != uint32(sampleRate) {
-		return nil, fmt.Errorf("Wav file has different sample rate (%d) to requested rate (%d)", pcm.SampleRate, sampleRate)
+	if wstream.SampleRate != uint32(sampleRate) {
+		return nil, fmt.Errorf("Wav file has different sample rate (%d) to requested rate (%d)", wstream.SampleRate, sampleRate)
 	}
 
 	startFn := func() error { return nil }
-	readFn  := func() (*pcmframe.Block, error) {
-		samples, err := pcm.ReadSamples(block.Size())
+	readFn  := func() (*Buffer, error) {
+		samples, err := wstream.ReadSamples(buf.Size())
 		if err != nil {
 			return nil, err
 		}
-		//log.Println(samples) // TESTING
-		block.SetBuffer(samples)  // Copy slice over the top since they are the same data types
-		block.UpdateReadCount(block.Size())
-		return block, nil
+		/*
+		// first time around check to see if frame formats are compatible
+		if (buf.empty) {
+			if frameFormat(buf.frame) != frameFormat(samples) {
+				log.Panicf("Incompatible frame formats buffer(%T), samples(%T)\n", buf.frame, samples)
+			}
+		}
+		*/
+		buf.SetFrame(samples)
+
+		return buf, nil
 	}
 	closeFn := func() error {
 		audio.Close()
@@ -153,9 +164,9 @@ func NewBufferedWav(filename string, buffer pcmframe.Buffer, sampleRate int) (*S
 
 	stream := Stream{
 		Filename: filename,
-		Buffer: block,
-		blockSize: block.Size(),
-		sampleRate: int(pcm.SampleRate),
+		Buffer: buf,
+		blockSize: buf.Size(),
+		sampleRate: int(wstream.SampleRate),
 		start: startFn,
 		read:  readFn,
 		close: closeFn,
@@ -165,13 +176,12 @@ func NewBufferedWav(filename string, buffer pcmframe.Buffer, sampleRate int) (*S
 
 }
 
-func NewMicrophone(blockSize int, sampleRate int) (*Stream, error) {
+func NewMicStream(sampleRate int) (*Stream, error) {
 	portaudio.Initialize()
 
-	buffer := make([]float32, blockSize)
-	block := pcmframe.NewBlock(buffer, sampleRate)
+	buf := NewIntBuffer(sampleRate)
 
-	paStream, err := portaudio.OpenDefaultStream(1, 0, float64(sampleRate), blockSize, buffer)
+	paStream, err := portaudio.OpenDefaultStream(1, 0, float64(sampleRate), buf.Size(), buf.Frame())
 	if err != nil {
 		return nil, err
 	}
@@ -181,14 +191,14 @@ func NewMicrophone(blockSize int, sampleRate int) (*Stream, error) {
 		return portaudio.Terminate()
 	}
 
-	readFn := func() (*pcmframe.Block, error) {
+	readFn := func() (*Buffer, error) {
 		err := paStream.Read()
 		if err != nil {
-			return block, err
+			return buf, err
 		}
-		block.UpdateReadCount(block.Size())
+		buf.UpdateReadCount(buf.Size())
 
-		return block, err
+		return buf, err
 
 	}
 
@@ -198,8 +208,8 @@ func NewMicrophone(blockSize int, sampleRate int) (*Stream, error) {
 
 	stream := Stream{
 		Filename:   "",
-		Buffer:     block,
-		blockSize:  block.Size(),
+		Buffer:     buf,
+		blockSize:  buf.Size(),
 		sampleRate: sampleRate,
 		start:      startFn,
 		read:       readFn,
@@ -208,4 +218,5 @@ func NewMicrophone(blockSize int, sampleRate int) (*Stream, error) {
 
 	return &stream, nil
 }
+
 

@@ -27,10 +27,10 @@
     </SOURCES>
     <excluded>
       <root url="file://$PROJECT_DIR$" />
-      <root url="file://$PROJECT_DIR$/pcmstream" />
-      <root url="file://$PROJECT_DIR$/pcmframe" />
+      <root url="file://$PROJECT_DIR$/pcm" />
       <root url="file://$PROJECT_DIR$/audiomatcher" />
       <root url="file://$PROJECT_DIR$/fingerprint" />
+      <root url="file://$PROJECT_DIR$/analysis" />
     </excluded>
   </library>
 </component>

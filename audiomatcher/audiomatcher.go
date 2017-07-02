@@ -6,6 +6,13 @@ import (
 	"math"
 )
 
+/*
+ * audioMatcher:
+ * Check for frequency / strength matches as well as temporal ones
+ * If we have a frequency match, log the time info which can be checked later to determine if the frequency match
+ * is in the right place in the song.
+ * Temporal matches are currently just a simple list of matches that get checked
+ */
 type matchedTimestamp struct {
 	mic  float64
 	song float64
@@ -42,6 +49,7 @@ func New(mappings map[string]fingerprint.Mapping) (*AudioMatcher) {
 	return &am
 }
 
+// register a fingerprint with the audio matcher in order to log the timestamps
 func (matcher *AudioMatcher) Register(fp *fingerprint.Fingerprint) {
 	fpm, ok := matcher.FingerprintLib[string(fp.Key)]
 	if !ok {
@@ -57,6 +65,7 @@ func (matcher *AudioMatcher) Register(fp *fingerprint.Fingerprint) {
 	fmt.Printf("Frequency match for %s at %.2f\n", fpm.Filename, fpm.Timestamp)
 }
 
+// return a slice of audioHits that the caller can use to determine the probability of a match
 func (matcher *AudioMatcher) GetHits() (orderedHits audioHits) {
 	hits := make(map[string]int)
 	totalHitcount := 0
