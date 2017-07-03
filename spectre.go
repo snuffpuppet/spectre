@@ -177,10 +177,13 @@ func dumpBlock(buf *pcm.Buffer) {
 }
 
 
-func dumpData(optFormat string, filenames []string) {
+func dumpData(filenames []string) {
 	for _, filename := range filenames {
-		fmt.Printf("Dumping data for %s using %s...\n", filename, optFormat)
+
 		stream, err := pcm.NewWavStream(filename, SAMPLE_RATE)
+
+		fmt.Printf("Dumping data for %s using %s...\n", filename, stream.Buffer.DataFormat())
+
 		if (err != nil) {
 			return
 		}
@@ -208,7 +211,7 @@ func main() {
 	flag.BoolVar(&optVerbose, "verbose", false, "Verbose output of spectral analysis data")
 	flag.BoolVar(&optRecord, "record", false, "Record data from Mic into -output file")
 	//flag.StringVar(&optFormat, "format", "float32", "Format of data to use for spectral analysis (float32|int16)")
-	flag.StringVar(&optAnalyser, "analyser", "pwelch", "Spectral analyser to use (pwelch | bespoke)")
+	flag.StringVar(&optAnalyser, "analyser", "bespoke", "Spectral analyser to use (pwelch | bespoke)")
 	flag.StringVar(&optOutFile, "output", "", "Output file for recording")
 	flag.BoolVar(&optDump, "dump", false, "Dump data in raw format from input file")
 
@@ -233,7 +236,7 @@ func main() {
 	filenames := flag.Args()
 
 	if optDump {
-		dumpData(optFormat, filenames)
+		dumpData(filenames)
 	}
 
 	fmt.Printf("Using '%s' analysis to generate fingerprints for %v\n", optAnalyser, filenames)
