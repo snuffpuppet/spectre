@@ -26,8 +26,10 @@ const (
 const SAMPLE_RATE = 11025
 const BLOCK_SIZE  = 4096
 
-//const REQUIRED_CANDIDATES = 4 		// required number of frequency candidates for a fingerprint entry
-const LOWER_FREQ_CUTOFF = 0.0		// Lowest frequency acceptable for matching
+//const REQUIRED_CANDIDATES = 4 	// required number of frequency candidates for a fingerprint entry
+const LOWER_FREQ_CUTOFF = 318.0		// Lowest frequency acceptable for matching
+const UPPER_FREQ_CUTOFF = 2000.0	// Highest frequency acceptable for matching
+
 //const LOWER_POWER_CUTOFF = 0.5
 const LOWER_POWER_CUTOFF = 100		// Power levels below this amount are ignored for matching
 const TIME_DELTA_THRESHOLD = 0.2	// required minimum time diff between freq matches to be considered a hit
@@ -74,6 +76,28 @@ type PcmReader interface {
 	Read() (*pcm.Frame, error)
 }
 
+func filterFrequencies(Pxx, freqs []float64, lowerLimit, upperLimit float64) (nPxx, nfreqs []float64) {
+	nPxx = make([]float64, 0)
+	nfreqs = make([]float64, 0)
+	for i, x := range freqs {
+		if x >= lowerLimit && x <= upperLimit {
+			nfreqs = append(nfreqs, x)
+			nPxx = append(nPxx, Pxx[i])
+		}
+	}
+
+	return
+}
+
+func getFingerprint(analyser analysis.SpectralAnalyser, samples []float64) (fp Fingerprinter) {
+	Pxx, freqs := analyser(samples, SAMPLE_RATE)
+	Pxx, freqs = filterFrequencies(Pxx, freqs, LOWER_FREQ_CUTOFF, UPPER_FREQ_CUTOFF)
+
+	fp = chroma.New(Pxx, freqs)
+
+	return
+}
+
 
 func loadStream(filename string, stream PcmReader, matches audiomatcher.Matches, analyser analysis.SpectralAnalyser, optVerbose bool) (audiomatcher.Matches, error){
 	clashCount, fpCount := 0, 0
@@ -86,18 +110,16 @@ func loadStream(filename string, stream PcmReader, matches audiomatcher.Matches,
 			return matches, err
 		}
 
-		Pxx, freqs := analyser(frame.AsFloat64(), SAMPLE_RATE)
-
-		fp := chroma.New(Pxx, freqs)
+		fp := getFingerprint(analyser, frame.AsFloat64())
 
 		printStatus(fp, frame, optVerbose)
 
 		if fp != nil {
 			fpCount++
-			if _, ok := matches[string(fp.Key)]; ok {
+			if _, ok := matches[string(fp.Fingerprint())]; ok {
 				clashCount++
 			}
-			matches[string(fp.Key)] = audiomatcher.Match{filename, frame.Timestamp()}
+			matches[string(fp.Fingerprint())] = audiomatcher.Match{filename, frame.Timestamp()}
 		}
 	}
 
@@ -148,10 +170,7 @@ func listen(audioMappings audiomatcher.Matches, analyser analysis.SpectralAnalys
 			log.Fatalf("Error reading microphone: %s", err)
 		}
 
-
-		Pxx, freqs := analyser(frame.AsFloat64(), SAMPLE_RATE)
-
-		fp := chroma.New(Pxx, freqs)
+		fp := getFingerprint(analyser, frame.AsFloat64())
 
 		if fp != nil {
 

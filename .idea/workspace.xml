@@ -2,28 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1bfa5838-8f17-4990-810f-3996b2b312bf" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/GOPATH__audioBuffer_.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/GOPATH__audioStream_.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/GOPATH__audiofingerprint_.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/GOPATH__bespoksa_.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/GOPATH__chroma_.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/GOPATH__fileStream_.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/GOPATH__microphoneStream_.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/chroma/chroma.go" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/chroma/chroma.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/spectre.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/buffer_test.go" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/GOPATH__fingerprint_.xml" afterPath="$PROJECT_DIR$/.idea/libraries/GOPATH__fingerprint_.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/GOPATH__spectre_.xml" afterPath="$PROJECT_DIR$/.idea/libraries/GOPATH__spectre_.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/analysis/analysis.go" afterPath="$PROJECT_DIR$/analysis/analysis.go" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/audiomatcher/audiomatcher.go" afterPath="$PROJECT_DIR$/audiomatcher/audiomatcher.go" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fingerprint/fingerprint.go" afterPath="$PROJECT_DIR$/fingerprint/fingerprint.go" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pcm/buffer.go" afterPath="$PROJECT_DIR$/pcm/buffer.go" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pcm/stream.go" afterPath="$PROJECT_DIR$/pcm/stream.go" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/spectre.go" afterPath="$PROJECT_DIR$/spectre.go" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -40,11 +19,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="spectre.go" pinned="false" current-in-tab="false">
+      <file leaf-file-name="spectre.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/spectre.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2822">
-              <caret line="31" column="2" lean-forward="false" selection-start-line="31" selection-start-column="2" selection-end-line="31" selection-end-column="2" />
+            <state relative-caret-position="-183">
+              <caret line="94" column="8" lean-forward="false" selection-start-line="94" selection-start-column="8" selection-end-line="94" selection-end-column="8" />
               <folding>
                 <element signature="e#14#365#0" expanded="true" />
               </folding>
@@ -64,10 +43,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="chroma.go" pinned="false" current-in-tab="true">
+      <file leaf-file-name="chroma.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/chroma/chroma.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="137">
+            <state relative-caret-position="59">
               <caret line="179" column="35" lean-forward="true" selection-start-line="179" selection-start-column="35" selection-end-line="179" selection-end-column="35" />
               <folding>
                 <element signature="e#16#69#0" expanded="true" />
@@ -373,6 +352,11 @@
     <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="FullScreen" value="true" />
     <property name="GO_FMT" value="false" />
+  </component>
+  <component name="Push.Settings">
+    <excluded-roots>
+      <path value="$PROJECT_DIR$/../../.." />
+    </excluded-roots>
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -755,7 +739,14 @@
       <option name="project" value="LOCAL" />
       <updated>1499059238076</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Refactor to use interfaces">
+      <created>1499645907582</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1499645907582</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TodoView">
@@ -788,7 +779,7 @@
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2890411" sideWeight="0.49030694" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2890411" sideWeight="0.49030694" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.48546043" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.49030694" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="GhcMod" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.49676898" order="0" side_tool="false" content_ui="tabs" />
@@ -809,7 +800,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="audioMatcher to encapsulate fingerprint matching" />
     <MESSAGE value="Fix minor refactoring issue with optFormat" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix minor refactoring issue with optFormat" />
+    <MESSAGE value="Refactor to use interfaces" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor to use interfaces" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1061,22 +1053,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/spectre.go">
+    <entry file="file://$PROJECT_DIR$/chroma/chroma.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2822">
-          <caret line="31" column="2" lean-forward="false" selection-start-line="31" selection-start-column="2" selection-end-line="31" selection-end-column="2" />
+        <state relative-caret-position="59">
+          <caret line="179" column="35" lean-forward="true" selection-start-line="179" selection-start-column="35" selection-end-line="179" selection-end-column="35" />
           <folding>
-            <element signature="e#14#365#0" expanded="true" />
+            <element signature="e#16#69#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/chroma/chroma.go">
+    <entry file="file://$PROJECT_DIR$/spectre.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="179" column="35" lean-forward="true" selection-start-line="179" selection-start-column="35" selection-end-line="179" selection-end-column="35" />
+        <state relative-caret-position="-183">
+          <caret line="94" column="8" lean-forward="false" selection-start-line="94" selection-start-column="8" selection-end-line="94" selection-end-column="8" />
           <folding>
-            <element signature="e#16#69#0" expanded="true" />
+            <element signature="e#14#365#0" expanded="true" />
           </folding>
         </state>
       </provider>
