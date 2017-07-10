@@ -1,7 +1,7 @@
 package pcm
-
+/*
 import (
-"log"
+	"log"
 	"reflect"
 )
 
@@ -11,12 +11,8 @@ import (
  * Supports int16 and float32 data formats and allows some type conversions.
  * Note: The type conversion oprations here will not convert between different audio formats
  *  TThe int 16 and float 32 audio formats are scaled differently so must be converted separately
- */
+ *//*
 
-const (
-	FMT_FLOAT32 = "f32"
-	FMT_INT16   = "s16"
-)
 
 const FRAME_SIZE = 4096
 
@@ -44,18 +40,13 @@ type asFloat64  func() []float64
 type asInt16    func() []int16
 type setFrame   func(*Buffer, interface {})
 
-func (b *Buffer) DataFormat() string     { return b.fnDataFormat() }
-func (b *Buffer) AsFloat64() []float64   { return b.fnAsFloat64() }
-func (b *Buffer) AsInt16() []int16       { return b.fnAsInt16() }
-func (b *Buffer) SetFrame(d interface{}) { b.fnSetFrame(b, d) }
+func (b *Buffer) DataFormat()            string      { return b.fnDataFormat() }
+func (b *Buffer) AsFloat64()             []float64   { return b.fnAsFloat64() }
+func (b *Buffer) AsInt16()               []int16     { return b.fnAsInt16() }
+func (b *Buffer) Size()                  int         { return b.size }
+func (b *Buffer) Frame()                 interface{} { return b.frame }
 
-func (b *Buffer) Size() int {
-	return b.size
-}
-
-func (b *Buffer) Frame() interface{} {
-	return b.frame
-}
+func (b *Buffer) SetFrame(d interface{})             { b.fnSetFrame(b, d) }
 
 func (buf *Buffer) UpdateReadCount(count int) {
 	if buf.empty {
@@ -168,3 +159,4 @@ func NewFloatBuffer(sampleRate int) *Buffer {
 	return &fb
 }
 
+*/

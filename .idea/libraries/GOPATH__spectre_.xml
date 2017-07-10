@@ -27,8 +27,11 @@
     </SOURCES>
     <excluded>
       <root url="file://$PROJECT_DIR$" />
+      <root url="file://$PROJECT_DIR$/ffmpeg" />
       <root url="file://$PROJECT_DIR$/pcm" />
       <root url="file://$PROJECT_DIR$/audiomatcher" />
+      <root url="file://$PROJECT_DIR$/tests" />
+      <root url="file://$PROJECT_DIR$/chroma" />
       <root url="file://$PROJECT_DIR$/fingerprint" />
       <root url="file://$PROJECT_DIR$/analysis" />
     </excluded>

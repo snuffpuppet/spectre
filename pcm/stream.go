@@ -1,5 +1,6 @@
-package pcm
 
+package pcm
+/*
 import (
 	"os/exec"
 	"github.com/mjibson/go-dsp/wav"
@@ -17,6 +18,7 @@ import (
  * The Stream struct abstracts the differences
  */
 
+/*
 type starter func() error
 type reader  func() (*Buffer, error)
 type closer  func() error
@@ -152,7 +154,7 @@ func NewWavStream(filename string, sampleRate int) (*Stream, error) {
 				log.Panicf("Incompatible frame formats buffer(%T), samples(%T)\n", buf.frame, samples)
 			}
 		}
-		*/
+		*//*
 		buf.SetFrame(samples)
 
 		return buf, nil
@@ -220,3 +222,4 @@ func NewMicStream(sampleRate int) (*Stream, error) {
 }
 
 
+*/

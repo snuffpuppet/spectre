@@ -6,23 +6,19 @@ import (
 	"github.com/mjibson/go-dsp/fft"
 	"github.com/mjibson/go-dsp/window"
 	"github.com/mjibson/go-dsp/spectral"
-	"github.com/snuffpuppet/spectre/pcm"
 )
+
+type SpectralAnalyser func([]float64, int) (Pxx, freqs []float64)
 
 /*
  * Use the PWelch algorithm to determine Spectral Density of the time series data
  */
-func PwelchAnalysis(sampleBlock *pcm.Buffer, sampleRate int) (Pxx, freqs []float64) {
+func Pwelch(samples []float64, sampleRate int) (Pxx, freqs []float64) {
 	// 'block' contains our data block, get a spectral analysis of this section of the audio
 	var opts spectral.PwelchOptions // default values are used
 	opts.Noverlap = 512
 	opts.NFFT = 1024
 	opts.Scale_off = true
-
-	samples := sampleBlock.AsFloat64()
-
-	//seg := spectral.Segment(samples, opts.NFFT, opts.Noverlap)
-	//fmt.Printf("Segs: %v\n", seg)
 
 	Pxx, freqs = spectral.Pwelch(samples, float64(sampleRate), &opts)
 
@@ -43,10 +39,7 @@ func PwelchAnalysis(sampleBlock *pcm.Buffer, sampleRate int) (Pxx, freqs []float
 /*
  * Use a basic non windowed algorithm to get frequencies and power levels
  */
-func BespokeAnalysis(sampleBlock *pcm.Buffer, sampleRate int) (Pxx, freqs []float64) {
-	samples := make([]float64, sampleBlock.Size())
-	copy(samples, sampleBlock.AsFloat64())
-
+func Simple(samples []float64, sampleRate int) (Pxx, freqs []float64) {
 	// construct a slice of complex numbers containing the sample data & imaginary part as 0
 	complexSamples := make([]complex128, len(samples))
 	for i, v := range samples {
@@ -74,17 +67,15 @@ func BespokeAnalysis(sampleBlock *pcm.Buffer, sampleRate int) (Pxx, freqs []floa
 /*
  * Use overlapping windows to adjust for spectral leakage when using the FFT
  */
-func OverlapAnalysis(sampleBlock *pcm.Buffer, sampleRate int) (Pxx, freqs []float64) {
+func Amplitude(samples []float64, sampleRate int) (Pxx, freqs []float64) {
 	// 'block' contains our data block, get a spectral analysis of this section of the audio
 
 	const NFFT = 512
 	const NOVERLAP = 384
-	const NORMALISING_ENABLED = false 	// disable normalising for the moment as it seems hide strong signals
+	const NORMALISING_ENABLED = false 	// disable normalising for the moment as it seems to hide strong signals
+	const DB_SCALING = true			// Scale the amplitude output to dB
 
 	wf := window.Hann
-
-	samples := make([]float64, sampleBlock.Size())
-	copy(samples, sampleBlock.AsFloat64())
 
 	segs := spectral.Segment(samples, NFFT, NOVERLAP)
 
@@ -113,6 +104,17 @@ func OverlapAnalysis(sampleBlock *pcm.Buffer, sampleRate int) (Pxx, freqs []floa
 		}
 	}
 
+	if DB_SCALING {
+		for i, x := range Pxx {
+			if x < 1 {
+				Pxx[i] = 0
+			} else {
+				Pxx[i] = 10 * math.Log10(x)
+			}
+		}
+
+	}
+	// Calculate and fill out the frequency slice
 	freqs = make([]float64, lp)
 	coef := float64(sampleRate) / float64(NFFT)
 	for i := range freqs {

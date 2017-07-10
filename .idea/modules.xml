@@ -3,12 +3,13 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/analysis/analysis.iml" filepath="$PROJECT_DIR$/analysis/analysis.iml" />
-      <module fileurl="file://$PROJECT_DIR$/pcmframe/audioBuffer.iml" filepath="$PROJECT_DIR$/pcmframe/audioBuffer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/pcmstream/audioStream.iml" filepath="$PROJECT_DIR$/pcmstream/audioStream.iml" />
       <module fileurl="file://$PROJECT_DIR$/audiomatcher/audiomatcher.iml" filepath="$PROJECT_DIR$/audiomatcher/audiomatcher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/chroma/chroma.iml" filepath="$PROJECT_DIR$/chroma/chroma.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ffmpeg/ffmpeg.iml" filepath="$PROJECT_DIR$/ffmpeg/ffmpeg.iml" />
       <module fileurl="file://$PROJECT_DIR$/fingerprint/fingerprint.iml" filepath="$PROJECT_DIR$/fingerprint/fingerprint.iml" />
       <module fileurl="file://$PROJECT_DIR$/pcm/pcm.iml" filepath="$PROJECT_DIR$/pcm/pcm.iml" />
       <module fileurl="file://$PROJECT_DIR$/spectre.iml" filepath="$PROJECT_DIR$/spectre.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tests/tests.iml" filepath="$PROJECT_DIR$/tests/tests.iml" />
     </modules>
   </component>
 </project>

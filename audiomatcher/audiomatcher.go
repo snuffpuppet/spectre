@@ -1,7 +1,7 @@
 package audiomatcher
 
 import (
-	"github.com/snuffpuppet/spectre/fingerprint"
+	//"github.com/snuffpuppet/spectre/fingerprint"
 	"fmt"
 	"math"
 )
@@ -26,6 +26,18 @@ type audioHit struct {
 
 type audioHits []audioHit
 
+// The data that the fingerprint maps to
+type Match struct {
+	Filename    string
+	Timestamp   float64
+}
+
+type Matches map[string]Match
+
+type Fingerprinter interface {
+	Fingerprint() []byte
+}
+
 func (a audioHits) String() (s string) {
 	s = ""
 	for _, v := range a {
@@ -37,11 +49,11 @@ func (a audioHits) String() (s string) {
 }
 
 type AudioMatcher struct {
-	FingerprintLib map[string]fingerprint.Mapping
+	FingerprintLib Matches
 	FrequencyHits  map[string][]matchedTimestamp
 }
 
-func New(mappings map[string]fingerprint.Mapping) (*AudioMatcher) {
+func New(mappings Matches) (*AudioMatcher) {
 	am := AudioMatcher{
 		FrequencyHits: make(map[string][]matchedTimestamp),
 		FingerprintLib: mappings,
@@ -50,8 +62,8 @@ func New(mappings map[string]fingerprint.Mapping) (*AudioMatcher) {
 }
 
 // register a fingerprint with the audio matcher in order to log the timestamps
-func (matcher *AudioMatcher) Register(fp *fingerprint.Fingerprint) {
-	fpm, ok := matcher.FingerprintLib[string(fp.Key)]
+func (matcher *AudioMatcher) Register(fp Fingerprinter, ts float64) {
+	fpm, ok := matcher.FingerprintLib[string(fp.Fingerprint())]
 	if !ok {
 		return
 	}
@@ -61,12 +73,12 @@ func (matcher *AudioMatcher) Register(fp *fingerprint.Fingerprint) {
 		timestamps = make([]matchedTimestamp, 1)
 	}
 
-	matcher.FrequencyHits[fpm.Filename] = append(timestamps, matchedTimestamp{mic: fp.Timestamp, song: fpm.Timestamp})
+	matcher.FrequencyHits[fpm.Filename] = append(timestamps, matchedTimestamp{mic: ts, song: fpm.Timestamp})
 	fmt.Printf("Frequency match for %s at %.2f\n", fpm.Filename, fpm.Timestamp)
 }
 
 // return a slice of audioHits that the caller can use to determine the probability of a match
-func (matcher *AudioMatcher) GetHits() (orderedHits audioHits) {
+func (matcher *AudioMatcher) GetHits(timeDeltaThreshold float64) (orderedHits audioHits) {
 	hits := make(map[string]int)
 	totalHitcount := 0
 
@@ -77,7 +89,7 @@ func (matcher *AudioMatcher) GetHits() (orderedHits audioHits) {
 				songTimeDelta := ts[i].song - ts[i-1].song
 				micTimeDelta := ts[i].mic - ts[i-1].mic
 
-				if  math.Abs(songTimeDelta - micTimeDelta) < fingerprint.TIME_DELTA_THRESHOLD {
+				if  math.Abs(songTimeDelta - micTimeDelta) < timeDeltaThreshold {
 					hits[filename]++
 					totalHitcount++
 					fmt.Printf("Time Delta match for %s (%d/%d)\n", filename, hits[filename], totalHitcount)
