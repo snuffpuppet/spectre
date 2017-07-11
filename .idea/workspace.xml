@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1bfa5838-8f17-4990-810f-3996b2b312bf" name="Default" comment="Banded freqs, source dependant silence thresholds">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/pcm/buffer.go" afterPath="" />
+    <list default="true" id="1bfa5838-8f17-4990-810f-3996b2b312bf" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -777,7 +776,14 @@
       <option name="project" value="LOCAL" />
       <updated>1499771515980</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="removed deprecated code">
+      <created>1499771862107</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1499771862107</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TodoView">
@@ -832,7 +838,8 @@
     <MESSAGE value="Fix minor refactoring issue with optFormat" />
     <MESSAGE value="Refactor to use interfaces" />
     <MESSAGE value="Add frequency cutoffs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add frequency cutoffs" />
+    <MESSAGE value="removed deprecated code" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed deprecated code" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
