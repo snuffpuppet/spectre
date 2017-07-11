@@ -1,5 +1,16 @@
 package fingerprint
 
+type Fingerprinter interface {
+	Fingerprint() []byte
+}
+
+// Apply an approximation to the frequency to help with inacuracies with matching later
+func fuzzyFreq(f float64) float64 {
+	return float64(int(f/10 + 0.5)*10)
+	//fuzzyFreq -= fuzzyFreq%2
+
+}
+
 /*
 import (
 	_ "crypto/sha1"
@@ -13,15 +24,6 @@ import (
 	"io"
 )
 
-type Fingerprinter interface {
-	Fingerprint() []byte
-	Timestamp()   float64
-}
-
-/*
- * Spectral Analysis and fingerprinting:
- *
- *//*
 type candidate struct { Freq float64
 			Pxx float64
 }
@@ -48,17 +50,10 @@ func (a ByFreq) Less(i, j int) bool { return a[i].Freq < a[j].Freq }
 // Fingerprint info on a block of audio data
 type Fingerprint struct {
 	Key           []byte
-	Timestamp     float64
 	Candidates    candidates
 }
 
 
-// Apply an approximation to the frequency to help with inacuracies with matching later
-func fuzzyFreq(f float64) float64 {
-	return float64(int(f/10 + 0.5)*10)
-	//fuzzyFreq -= fuzzyFreq%2
-
-}
 
 // return te strongest (REQUIRED_CANDIDATES) frequencies in the frequency data
 func getTopCandidates(freqs, Pxx []float64) (candidates) {

@@ -1,4 +1,4 @@
-package chroma
+package fingerprint
 
 import (
 	"fmt"
@@ -115,13 +115,6 @@ func (t Transcription) String() string {
 	return s
 }
 
-// Apply an approximation to the frequency to help with inacuracies with matching later
-func fuzzyFreq(f float64) float64 {
-	return float64(int(f/10 + 0.5)*10)
-	//fuzzyFreq -= fuzzyFreq%2
-
-}
-
 // Convert the frequency/power data into buckets of musical notes based on strength of signal
 func transcribe(freqs, Pxx []float64) (t Transcription) {
 	chromaCount := 0
@@ -151,7 +144,7 @@ func transcribe(freqs, Pxx []float64) (t Transcription) {
 func audioKey(t Transcription) (key []byte) {
 	// The Powerkey method uses a scaled strength of each of the 12 notes to generate the key
 	// The frequency hash method uses the strongest frequencies for each of the notes to create a hash
-	optPowerKey := true
+	optPowerKey := false
 
 	if t == nil {
 		return nil
@@ -182,7 +175,7 @@ func audioKey(t Transcription) (key []byte) {
 	return
 }
 
-func New(Pxx, freqs []float64) (*Chromaprint) {
+func NewChromaprint(Pxx, freqs []float64) (*Chromaprint) {
 	transcription := transcribe(freqs, Pxx)
 	//log.Printf("fp transscription: %s\n", transcription)
 

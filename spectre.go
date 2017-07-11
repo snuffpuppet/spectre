@@ -8,8 +8,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
-	//"github.com/snuffpuppet/spectre/fingerprint"
-	"github.com/snuffpuppet/spectre/chroma"
+	"github.com/snuffpuppet/spectre/fingerprint"
 	"github.com/snuffpuppet/spectre/pcm"
 	//"github.com/snuffpuppet/spectre/audiomatcher"
 	"bufio"
@@ -30,9 +29,10 @@ const BLOCK_SIZE  = 4096
 const LOWER_FREQ_CUTOFF = 318.0		// Lowest frequency acceptable for matching
 const UPPER_FREQ_CUTOFF = 2000.0	// Highest frequency acceptable for matching
 
-//const LOWER_POWER_CUTOFF = 0.5
-const LOWER_POWER_CUTOFF = 100		// Power levels below this amount are ignored for matching
 const TIME_DELTA_THRESHOLD = 0.2	// required minimum time diff between freq matches to be considered a hit
+
+const FILE_SILENCE_THRESHOLD = 30.0
+const MIC_SILENCE_THRESHOLD = 30.0
 
 type Fingerprinter interface {
 	Fingerprint() []byte
@@ -76,26 +76,33 @@ type PcmReader interface {
 	Read() (*pcm.Frame, error)
 }
 
-func filterFrequencies(Pxx, freqs []float64, lowerLimit, upperLimit float64) (nPxx, nfreqs []float64) {
+func filterSamples(Pxx, freqs []float64, lowFreq, highFreq, lowPower float64) (nPxx, nfreqs []float64) {
 	nPxx = make([]float64, 0)
 	nfreqs = make([]float64, 0)
 	for i, x := range freqs {
-		if x >= lowerLimit && x <= upperLimit {
+		if x >= lowFreq && x <= highFreq && Pxx[i] > lowPower {
 			nfreqs = append(nfreqs, x)
 			nPxx = append(nPxx, Pxx[i])
 		}
 	}
 
+	log.Printf("filter: %d samples -> %d\n", len(freqs), len(nfreqs))
+
 	return
 }
 
-func getFingerprint(analyser analysis.SpectralAnalyser, samples []float64) (fp Fingerprinter) {
+func getFingerprint(analyser analysis.SpectralAnalyser, samples []float64, silenceThreshold float64) (Fingerprinter) {
 	Pxx, freqs := analyser(samples, SAMPLE_RATE)
-	Pxx, freqs = filterFrequencies(Pxx, freqs, LOWER_FREQ_CUTOFF, UPPER_FREQ_CUTOFF)
+	Pxx, freqs = filterSamples(Pxx, freqs, LOWER_FREQ_CUTOFF, UPPER_FREQ_CUTOFF, silenceThreshold)
 
-	fp = chroma.New(Pxx, freqs)
+	//fp := fingerprint.NewChromaprint(Pxx, freqs)
+	fp := fingerprint.NewBandedprint(Pxx, freqs)
+	
+	if fp == nil {
+		return nil
+	}
 
-	return
+	return fp
 }
 
 
@@ -110,7 +117,7 @@ func loadStream(filename string, stream PcmReader, matches audiomatcher.Matches,
 			return matches, err
 		}
 
-		fp := getFingerprint(analyser, frame.AsFloat64())
+		fp := getFingerprint(analyser, frame.AsFloat64(), FILE_SILENCE_THRESHOLD)
 
 		printStatus(fp, frame, optVerbose)
 
@@ -170,7 +177,7 @@ func listen(audioMappings audiomatcher.Matches, analyser analysis.SpectralAnalys
 			log.Fatalf("Error reading microphone: %s", err)
 		}
 
-		fp := getFingerprint(analyser, frame.AsFloat64())
+		fp := getFingerprint(analyser, frame.AsFloat64(), MIC_SILENCE_THRESHOLD)
 
 		if fp != nil {
 
