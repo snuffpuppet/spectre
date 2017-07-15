@@ -86,7 +86,7 @@ func filterSamples(Pxx, freqs []float64, lowFreq, highFreq, lowPower float64) (n
 		}
 	}
 
-	log.Printf("filter: %d samples -> %d\n", len(freqs), len(nfreqs))
+	//log.Printf("filter: %d samples -> %d\n", len(freqs), len(nfreqs))
 
 	return
 }
@@ -96,7 +96,7 @@ func getFingerprint(analyser analysis.SpectralAnalyser, samples []float64, silen
 	Pxx, freqs = filterSamples(Pxx, freqs, LOWER_FREQ_CUTOFF, UPPER_FREQ_CUTOFF, silenceThreshold)
 
 	//fp := fingerprint.NewChromaprint(Pxx, freqs)
-	fp := fingerprint.NewBandedprint(Pxx, freqs)
+	fp := fingerprint.NewChromaprint(Pxx, freqs)
 	
 	if fp == nil {
 		return nil

@@ -104,15 +104,29 @@ type Chroma struct {
 	Strength float64
 }
 
+func (c Chroma) String() string {
+	return fmt.Sprintf("[%s] %6.1f", c.Note, c.Freq)
+}
+
 type Transcription []Chroma
 
 func (t Transcription) String() string {
 	s := ""
-	for i, v := range t {
-		s += fmt.Sprintf("[%s] %6.1f ", note(i), v.Freq)
+	for _, v := range t {
+		s += fmt.Sprintf("%s ", v)
 	}
 
 	return s
+}
+
+func (t Transcription) meanStrength() (m float64) {
+	m = 0.0
+	for _, v := range t {
+		m += v.Strength
+	}
+	m /= float64(len(t))
+
+	return
 }
 
 // Convert the frequency/power data into buckets of musical notes based on strength of signal
@@ -175,9 +189,32 @@ func audioKey(t Transcription) (key []byte) {
 	return
 }
 
+func highPassFilter(t Transcription) (Transcription) {
+	if t == nil {
+		return t
+	}
+
+	mean := t.meanStrength()
+	//log.Printf("highPassFIlter: mean = %f\n", mean)
+
+	f := make([]Chroma, MAX_NOTE)
+
+	for i, v := range t {
+		f[i] = t[i]
+		if v.Strength < mean {
+			f[i].Strength, f[i].Freq = 0, 0
+		}
+	}
+
+	return f
+}
+
 func NewChromaprint(Pxx, freqs []float64) (*Chromaprint) {
 	transcription := transcribe(freqs, Pxx)
-	//log.Printf("fp transscription: %s\n", transcription)
+	//log.Printf("NewChromaPrint1: %s\n", transcription)
+
+	transcription = highPassFilter(transcription)
+	//log.Printf("NewChromaPrint2: %s\n", transcription)
 
 	key := audioKey(transcription)
 	//log.Printf("fp key: %s\n", key)
