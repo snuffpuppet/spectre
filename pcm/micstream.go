@@ -28,11 +28,7 @@ func (m *MicStream) Read() (*Frame, error) {
 		m.blockId++
 	}
 
-	frame := Frame {
-		data:	   m.buf,
-		blockId:   m.blockId,
-		timestamp: float64(m.blockId) / float64(m.sampleRate),
-	}
+	frame := NewFrame(m.buf, m.blockId, m.sampleRate)
 
 	return &frame, nil
 }

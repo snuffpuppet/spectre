@@ -2,8 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1bfa5838-8f17-4990-810f-3996b2b312bf" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/analysis/spectra.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/GOPATH__fingerprint_.xml" afterPath="$PROJECT_DIR$/.idea/libraries/GOPATH__fingerprint_.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/GOPATH__spectre_.xml" afterPath="$PROJECT_DIR$/.idea/libraries/GOPATH__spectre_.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/analysis/analysis.go" afterPath="$PROJECT_DIR$/analysis/analysis.go" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fingerprint/chroma.go" afterPath="$PROJECT_DIR$/fingerprint/chroma.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fingerprint/fingerprint.go" afterPath="$PROJECT_DIR$/fingerprint/fingerprint.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pcm/filestream.go" afterPath="$PROJECT_DIR$/pcm/filestream.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pcm/frame.go" afterPath="$PROJECT_DIR$/pcm/frame.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pcm/micstream.go" afterPath="$PROJECT_DIR$/pcm/micstream.go" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/spectre.go" afterPath="$PROJECT_DIR$/spectre.go" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -23,8 +31,8 @@
       <file leaf-file-name="spectre.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/spectre.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="971">
-              <caret line="98" column="35" lean-forward="false" selection-start-line="98" selection-start-column="35" selection-end-line="98" selection-end-column="35" />
+            <state relative-caret-position="557">
+              <caret line="79" column="10" lean-forward="false" selection-start-line="79" selection-start-column="10" selection-end-line="79" selection-end-column="10" />
               <folding />
             </state>
           </provider>
@@ -33,22 +41,30 @@
       <file leaf-file-name="audiomatcher.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/audiomatcher/audiomatcher.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="75" column="89" lean-forward="false" selection-start-line="75" selection-start-column="89" selection-end-line="75" selection-end-column="89" />
-              <folding>
-                <element signature="e#22#95#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="213">
+              <caret line="76" column="70" lean-forward="false" selection-start-line="76" selection-start-column="70" selection-end-line="76" selection-end-column="70" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="chroma.go" pinned="false" current-in-tab="true">
+      <file leaf-file-name="spectra.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/analysis/spectra.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="501">
+              <caret line="55" column="23" lean-forward="false" selection-start-line="55" selection-start-column="23" selection-end-line="55" selection-end-column="23" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="chroma.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fingerprint/chroma.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="293">
-              <caret line="107" column="55" lean-forward="false" selection-start-line="107" selection-start-column="55" selection-end-line="107" selection-end-column="55" />
+            <state relative-caret-position="340">
+              <caret line="143" column="0" lean-forward="false" selection-start-line="143" selection-start-column="0" selection-end-line="143" selection-end-column="0" />
               <folding>
-                <element signature="e#21#74#0" expanded="true" />
+                <element signature="e#21#117#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -57,8 +73,8 @@
       <file leaf-file-name="fingerprint.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fingerprint/fingerprint.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3435">
-              <caret line="229" column="41" lean-forward="false" selection-start-line="229" selection-start-column="41" selection-end-line="229" selection-end-column="41" />
+            <state relative-caret-position="120">
+              <caret line="8" column="35" lean-forward="false" selection-start-line="8" selection-start-column="35" selection-end-line="8" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -67,29 +83,13 @@
       <file leaf-file-name="banded.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fingerprint/banded.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1680">
+            <state relative-caret-position="1695">
               <caret line="118" column="18" lean-forward="false" selection-start-line="118" selection-start-column="18" selection-end-line="118" selection-end-column="18" />
               <folding>
                 <element signature="e#21#67#0" expanded="true" />
                 <marker date="1499770543000" expanded="true" signature="91:93" ph="{...}" />
                 <marker date="1499770543000" expanded="true" signature="2056:2352" ph="{...}" />
-                <marker date="1499770543000" expanded="true" signature="2089:2200" ph="{...}" />
-                <marker date="1499770543000" expanded="true" signature="2106:2197" ph="{...}" />
-                <marker date="1499770543000" expanded="true" signature="2152:2192" ph="{...}" />
-                <marker date="1499770543000" expanded="true" signature="2542:2589" ph="{...}" />
-                <marker date="1499770543000" expanded="true" signature="2723:2777" ph="{...}" />
-                <marker date="1499770543000" expanded="true" signature="2820:2864" ph="{...}" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="fingerprint.iml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fingerprint/fingerprint.iml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -97,8 +97,8 @@
       <file leaf-file-name="analysis.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/analysis/analysis.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="36">
-              <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+            <state relative-caret-position="472">
+              <caret line="123" column="26" lean-forward="false" selection-start-line="123" selection-start-column="26" selection-end-line="123" selection-end-column="26" />
               <folding>
                 <element signature="e#18#157#0" expanded="true" />
               </folding>
@@ -106,12 +106,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="frame.go" pinned="false" current-in-tab="false">
+      <file leaf-file-name="frame.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pcm/frame.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="11" lean-forward="true" selection-start-line="0" selection-start-column="11" selection-end-line="0" selection-end-column="11" />
+            <state relative-caret-position="180">
+              <caret line="12" column="77" lean-forward="false" selection-start-line="12" selection-start-column="77" selection-end-line="12" selection-end-column="77" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="filestream.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pcm/filestream.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="402">
+              <caret line="45" column="8" lean-forward="false" selection-start-line="45" selection-start-column="8" selection-end-line="45" selection-end-column="67" />
+              <folding>
+                <element signature="e#13#130#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -119,8 +131,8 @@
       <file leaf-file-name="micstream.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pcm/micstream.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="36" column="26" lean-forward="false" selection-start-line="36" selection-start-column="26" selection-end-line="36" selection-end-column="26" />
+            <state relative-caret-position="94">
+              <caret line="37" column="1" lean-forward="true" selection-start-line="37" selection-start-column="1" selection-end-line="37" selection-end-column="1" />
               <folding>
                 <element signature="e#13#54#0" expanded="true" />
               </folding>
@@ -140,7 +152,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>fileStream</find>
       <find>AudioBuffer</find>
       <find>FileStream</find>
       <find>BLOCK_SIZE</find>
@@ -170,6 +181,7 @@
       <find>log</find>
       <find>fingerprint</find>
       <find>filter</find>
+      <find>highPass</find>
     </findStrings>
     <replaceStrings>
       <replace>AudioBuffer.Block</replace>
@@ -215,18 +227,19 @@
         <option value="$PROJECT_DIR$/tests/buffer_test.go" />
         <option value="$PROJECT_DIR$/pcm/ffmpeg.go" />
         <option value="$PROJECT_DIR$/ffmpeg/ffmpeg.go" />
-        <option value="$PROJECT_DIR$/analysis/analysis.go" />
         <option value="$PROJECT_DIR$/pcm/stream.go" />
         <option value="$PROJECT_DIR$/pcm/buffer.go" />
+        <option value="$PROJECT_DIR$/audiomatcher/audiomatcher.go" />
+        <option value="$PROJECT_DIR$/chroma/chroma.go" />
+        <option value="$PROJECT_DIR$/fingerprint/banded.go" />
+        <option value="$PROJECT_DIR$/analysis/analysis.go" />
+        <option value="$PROJECT_DIR$/analysis/spectra.go" />
+        <option value="$PROJECT_DIR$/spectre.go" />
+        <option value="$PROJECT_DIR$/fingerprint/fingerprint.go" />
+        <option value="$PROJECT_DIR$/fingerprint/chroma.go" />
         <option value="$PROJECT_DIR$/pcm/filestream.go" />
         <option value="$PROJECT_DIR$/pcm/micstream.go" />
         <option value="$PROJECT_DIR$/pcm/frame.go" />
-        <option value="$PROJECT_DIR$/audiomatcher/audiomatcher.go" />
-        <option value="$PROJECT_DIR$/chroma/chroma.go" />
-        <option value="$PROJECT_DIR$/fingerprint/fingerprint.go" />
-        <option value="$PROJECT_DIR$/fingerprint/banded.go" />
-        <option value="$PROJECT_DIR$/spectre.go" />
-        <option value="$PROJECT_DIR$/fingerprint/chroma.go" />
       </list>
     </option>
   </component>
@@ -250,6 +263,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -344,9 +359,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -357,6 +370,7 @@
     <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="FullScreen" value="true" />
     <property name="GO_FMT" value="false" />
+    <property name="SearchEverywhereHistoryKey" value="fuzzy&#9;null&#9;null" />
   </component>
   <component name="Push.Settings">
     <excluded-roots>
@@ -787,7 +801,14 @@
       <option name="project" value="LOCAL" />
       <updated>1499771964900</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Add high pass filter to Chroma selection">
+      <created>1500120325287</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1500120325287</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TodoView">
@@ -809,16 +830,16 @@
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.509693" order="9" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24109589" sideWeight="0.51534736" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2890411" sideWeight="0.49030694" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24109589" sideWeight="0.48546043" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24109589" sideWeight="0.48465267" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.49030694" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="GhcMod" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.49676898" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24474959" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24878837" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Cabal" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24959612" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -844,7 +865,8 @@
     <MESSAGE value="Refactor to use interfaces" />
     <MESSAGE value="Add frequency cutoffs" />
     <MESSAGE value="removed deprecated code" />
-    <option name="LAST_COMMIT_MESSAGE" value="removed deprecated code" />
+    <MESSAGE value="Add high pass filter to Chroma selection" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add high pass filter to Chroma selection" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -855,6 +877,64 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/fingerprint/banded.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1695">
+          <caret line="118" column="18" lean-forward="false" selection-start-line="118" selection-start-column="18" selection-end-line="118" selection-end-column="18" />
+          <folding>
+            <element signature="e#21#67#0" expanded="true" />
+            <marker date="1499770543000" expanded="true" signature="91:93" ph="{...}" />
+            <marker date="1499770543000" expanded="true" signature="2056:2352" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fingerprint/fingerprint.iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analysis/analysis.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding>
+            <element signature="e#18#157#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pcm/frame.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="11" lean-forward="true" selection-start-line="0" selection-start-column="11" selection-end-line="0" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pcm/micstream.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="36" column="26" lean-forward="false" selection-start-line="36" selection-start-column="26" selection-end-line="36" selection-end-column="26" />
+          <folding>
+            <element signature="e#13#54#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fingerprint/chroma.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1605">
+          <caret line="107" column="55" lean-forward="false" selection-start-line="107" selection-start-column="55" selection-end-line="107" selection-end-column="55" />
+          <folding>
+            <element signature="e#21#117#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/spectre.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -868,7 +948,7 @@
         <state relative-caret-position="1125">
           <caret line="75" column="89" lean-forward="false" selection-start-line="75" selection-start-column="89" selection-end-line="75" selection-end-column="89" />
           <folding>
-            <element signature="e#22#95#0" expanded="true" />
+            <element signature="e#22#95#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -878,7 +958,7 @@
         <state relative-caret-position="1650">
           <caret line="116" column="0" lean-forward="true" selection-start-line="116" selection-start-column="0" selection-end-line="116" selection-end-column="0" />
           <folding>
-            <element signature="e#21#74#0" expanded="true" />
+            <element signature="e#21#117#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -899,12 +979,6 @@
             <element signature="e#21#67#0" expanded="true" />
             <marker date="1499770543000" expanded="true" signature="91:93" ph="{...}" />
             <marker date="1499770543000" expanded="true" signature="2056:2352" ph="{...}" />
-            <marker date="1499770543000" expanded="true" signature="2089:2200" ph="{...}" />
-            <marker date="1499770543000" expanded="true" signature="2106:2197" ph="{...}" />
-            <marker date="1499770543000" expanded="true" signature="2152:2192" ph="{...}" />
-            <marker date="1499770543000" expanded="true" signature="2542:2589" ph="{...}" />
-            <marker date="1499770543000" expanded="true" signature="2723:2777" ph="{...}" />
-            <marker date="1499770543000" expanded="true" signature="2820:2864" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -932,7 +1006,7 @@
         <state relative-caret-position="1185">
           <caret line="86" column="29" lean-forward="false" selection-start-line="86" selection-start-column="29" selection-end-line="86" selection-end-column="29" />
           <folding>
-            <element signature="e#13#130#0" expanded="false" />
+            <element signature="e#13#130#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -968,19 +1042,12 @@
         <state relative-caret-position="675">
           <caret line="45" column="53" lean-forward="false" selection-start-line="45" selection-start-column="53" selection-end-line="45" selection-end-column="53" />
           <folding>
-            <element signature="e#22#95#0" expanded="true" />
+            <element signature="e#22#95#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pcm/buffer.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2565">
-          <caret line="174" column="19" lean-forward="false" selection-start-line="174" selection-start-column="19" selection-end-line="174" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/pcm/buffer.go" />
     <entry file="file://$PROJECT_DIR$/pcm/frame.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
@@ -989,14 +1056,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pcm/stream.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="690">
-          <caret line="54" column="24" lean-forward="false" selection-start-line="54" selection-start-column="24" selection-end-line="54" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/pcm/stream.go" />
     <entry file="file://$PROJECT_DIR$/fingerprint/fingerprint.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
@@ -1018,19 +1078,12 @@
         <state relative-caret-position="675">
           <caret line="45" column="53" lean-forward="false" selection-start-line="45" selection-start-column="53" selection-end-line="45" selection-end-column="53" />
           <folding>
-            <element signature="e#22#95#0" expanded="true" />
+            <element signature="e#22#95#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pcm/buffer.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2565">
-          <caret line="174" column="19" lean-forward="false" selection-start-line="174" selection-start-column="19" selection-end-line="174" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/pcm/buffer.go" />
     <entry file="file://$PROJECT_DIR$/pcm/frame.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
@@ -1039,14 +1092,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pcm/stream.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="690">
-          <caret line="54" column="24" lean-forward="false" selection-start-line="54" selection-start-column="24" selection-end-line="54" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/pcm/stream.go" />
     <entry file="file://$PROJECT_DIR$/fingerprint/fingerprint.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
@@ -1099,34 +1145,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pcm/buffer.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="404">
-          <caret line="161" column="2" lean-forward="false" selection-start-line="161" selection-start-column="2" selection-end-line="161" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pcm/filestream.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1185">
-          <caret line="86" column="29" lean-forward="false" selection-start-line="86" selection-start-column="29" selection-end-line="86" selection-end-column="29" />
-          <folding>
-            <element signature="e#13#130#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pcm/micstream.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="36" column="26" lean-forward="false" selection-start-line="36" selection-start-column="26" selection-end-line="36" selection-end-column="26" />
-          <folding>
-            <element signature="e#13#54#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/pcm/buffer.go" />
     <entry file="file://$PROJECT_DIR$/fingerprint/fingerprint.iml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1137,81 +1156,94 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fingerprint/banded.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1680">
+        <state relative-caret-position="1695">
           <caret line="118" column="18" lean-forward="false" selection-start-line="118" selection-start-column="18" selection-end-line="118" selection-end-column="18" />
           <folding>
             <element signature="e#21#67#0" expanded="true" />
             <marker date="1499770543000" expanded="true" signature="91:93" ph="{...}" />
             <marker date="1499770543000" expanded="true" signature="2056:2352" ph="{...}" />
-            <marker date="1499770543000" expanded="true" signature="2089:2200" ph="{...}" />
-            <marker date="1499770543000" expanded="true" signature="2106:2197" ph="{...}" />
-            <marker date="1499770543000" expanded="true" signature="2152:2192" ph="{...}" />
-            <marker date="1499770543000" expanded="true" signature="2542:2589" ph="{...}" />
-            <marker date="1499770543000" expanded="true" signature="2723:2777" ph="{...}" />
-            <marker date="1499770543000" expanded="true" signature="2820:2864" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pcm/stream.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2970">
-          <caret line="1" column="11" lean-forward="true" selection-start-line="1" selection-start-column="11" selection-end-line="1" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/pcm/stream.go" />
     <entry file="file://$PROJECT_DIR$/analysis/analysis.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+        <state relative-caret-position="472">
+          <caret line="123" column="26" lean-forward="false" selection-start-line="123" selection-start-column="26" selection-end-line="123" selection-end-column="26" />
           <folding>
             <element signature="e#18#157#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pcm/frame.go">
+    <entry file="file://$PROJECT_DIR$/analysis/spectra.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="11" lean-forward="true" selection-start-line="0" selection-start-column="11" selection-end-line="0" selection-end-column="11" />
+        <state relative-caret-position="501">
+          <caret line="55" column="23" lean-forward="false" selection-start-line="55" selection-start-column="23" selection-end-line="55" selection-end-column="23" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/audiomatcher/audiomatcher.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="75" column="89" lean-forward="false" selection-start-line="75" selection-start-column="89" selection-end-line="75" selection-end-column="89" />
-          <folding>
-            <element signature="e#22#95#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/fingerprint/fingerprint.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3435">
-          <caret line="229" column="41" lean-forward="false" selection-start-line="229" selection-start-column="41" selection-end-line="229" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/spectre.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="971">
-          <caret line="98" column="35" lean-forward="false" selection-start-line="98" selection-start-column="35" selection-end-line="98" selection-end-column="35" />
+        <state relative-caret-position="120">
+          <caret line="8" column="35" lean-forward="false" selection-start-line="8" selection-start-column="35" selection-end-line="8" selection-end-column="35" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/fingerprint/chroma.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="293">
-          <caret line="107" column="55" lean-forward="false" selection-start-line="107" selection-start-column="55" selection-end-line="107" selection-end-column="55" />
+        <state relative-caret-position="340">
+          <caret line="143" column="0" lean-forward="false" selection-start-line="143" selection-start-column="0" selection-end-line="143" selection-end-column="0" />
           <folding>
-            <element signature="e#21#74#0" expanded="true" />
+            <element signature="e#21#117#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/audiomatcher/audiomatcher.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="213">
+          <caret line="76" column="70" lean-forward="false" selection-start-line="76" selection-start-column="70" selection-end-line="76" selection-end-column="70" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/spectre.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="557">
+          <caret line="79" column="10" lean-forward="false" selection-start-line="79" selection-start-column="10" selection-end-line="79" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pcm/filestream.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="402">
+          <caret line="45" column="8" lean-forward="false" selection-start-line="45" selection-start-column="8" selection-end-line="45" selection-end-column="67" />
+          <folding>
+            <element signature="e#13#130#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pcm/micstream.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="94">
+          <caret line="37" column="1" lean-forward="true" selection-start-line="37" selection-start-column="1" selection-end-line="37" selection-end-column="1" />
+          <folding>
+            <element signature="e#13#54#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pcm/frame.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="77" lean-forward="false" selection-start-line="12" selection-start-column="77" selection-end-line="12" selection-end-column="77" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1267,7 +1299,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>spectre</last-edited>
+          <last-edited>ffmpeg</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

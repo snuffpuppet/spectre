@@ -43,11 +43,7 @@ func (f *FileStream) Read() (*Frame, error) {
 		f.blockId++
 	}
 
-	frame := Frame {
-		data:	   block.([]int16),
-		blockId:   f.blockId,
-		timestamp: float64(f.blockId) / float64(f.sampleRate),
-	}
+	frame := NewFrame(block.([]int16), f.blockId, f.sampleRate)
 
 	return &frame, nil
 }

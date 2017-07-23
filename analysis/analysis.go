@@ -8,19 +8,19 @@ import (
 	"github.com/mjibson/go-dsp/spectral"
 )
 
-type SpectralAnalyser func([]float64, int) (Pxx, freqs []float64)
+type SpectralAnalyser func([]float64, int) Spectra
 
 /*
  * Use the PWelch algorithm to determine Spectral Density of the time series data
  */
-func Pwelch(samples []float64, sampleRate int) (Pxx, freqs []float64) {
+func Pwelch(samples []float64, sampleRate int) Spectra {
 	// 'block' contains our data block, get a spectral analysis of this section of the audio
 	var opts spectral.PwelchOptions // default values are used
 	opts.Noverlap = 512
 	opts.NFFT = 1024
 	opts.Scale_off = true
 
-	Pxx, freqs = spectral.Pwelch(samples, float64(sampleRate), &opts)
+	Pxx, freqs := spectral.Pwelch(samples, float64(sampleRate), &opts)
 
 	if false {
 		// Now convert Pxx (Power per unit freq) to dB
@@ -33,7 +33,7 @@ func Pwelch(samples []float64, sampleRate int) (Pxx, freqs []float64) {
 		}
 	}
 
-	return
+	return Spectra { Freqs: freqs, Pxx: Pxx }
 }
 
 /*
@@ -67,7 +67,7 @@ func Simple(samples []float64, sampleRate int) (Pxx, freqs []float64) {
 /*
  * Use overlapping windows to adjust for spectral leakage when using the FFT
  */
-func Amplitude(samples []float64, sampleRate int) (Pxx, freqs []float64) {
+func Amplitude(samples []float64, sampleRate int) Spectra {
 	// 'block' contains our data block, get a spectral analysis of this section of the audio
 
 	const NFFT = 512
@@ -81,7 +81,7 @@ func Amplitude(samples []float64, sampleRate int) (Pxx, freqs []float64) {
 
 	lp := NFFT / 2 + 1
 
-	Pxx = make([]float64, lp)
+	Pxx := make([]float64, lp)
 
 	for _, x := range segs {
 		window.Apply(x, wf)
@@ -115,13 +115,13 @@ func Amplitude(samples []float64, sampleRate int) (Pxx, freqs []float64) {
 
 	}
 	// Calculate and fill out the frequency slice
-	freqs = make([]float64, lp)
+	freqs := make([]float64, lp)
 	coef := float64(sampleRate) / float64(NFFT)
 	for i := range freqs {
 		freqs[i] = float64(i) * coef
 	}
 
-	return
+	return Spectra { Freqs: freqs, Pxx: Pxx }
 }
 
 

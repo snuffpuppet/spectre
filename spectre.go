@@ -67,7 +67,7 @@ func printStatus(fp Fingerprinter, frame IdTimestamper, verbose bool) {
 		} else {
 			//fmt.Printf("%s %s\n", header, fp.Candidates)
 			fmt.Printf("%s %s\n", header, fp)
-			fmt.Printf("%s -> Key: %v\n\n", header, fp.Fingerprint())
+			//fmt.Printf("%s -> Key: %v\n\n", header, fp.Fingerprint())
 		}
 	}
 }
@@ -76,27 +76,26 @@ type PcmReader interface {
 	Read() (*pcm.Frame, error)
 }
 
-func filterSamples(Pxx, freqs []float64, lowFreq, highFreq, lowPower float64) (nPxx, nfreqs []float64) {
-	nPxx = make([]float64, 0)
-	nfreqs = make([]float64, 0)
-	for i, x := range freqs {
-		if x >= lowFreq && x <= highFreq && Pxx[i] > lowPower {
-			nfreqs = append(nfreqs, x)
-			nPxx = append(nPxx, Pxx[i])
-		}
-	}
-
-	//log.Printf("filter: %d samples -> %d\n", len(freqs), len(nfreqs))
-
-	return
-}
-
 func getFingerprint(analyser analysis.SpectralAnalyser, samples []float64, silenceThreshold float64) (Fingerprinter) {
-	Pxx, freqs := analyser(samples, SAMPLE_RATE)
-	Pxx, freqs = filterSamples(Pxx, freqs, LOWER_FREQ_CUTOFF, UPPER_FREQ_CUTOFF, silenceThreshold)
+	//s := ""
+
+	spectra := analyser(samples, SAMPLE_RATE)
+	//log.Printf("Raw Samples:\n%v\n%v\n\n", spectra.Freqs, spectra.Pxx)
+	//s = fmt.Sprintf("%s -> samples=%d", s, len(spectra.Freqs))
+
+	spectra = spectra.Filter(LOWER_FREQ_CUTOFF, UPPER_FREQ_CUTOFF, silenceThreshold)
+	//s = fmt.Sprintf("%s -> audible=%d", s, len(spectra.Freqs))
+
+	spectra = spectra.Maxima()
+	//s = fmt.Sprintf("%s -> maxima=%d", s, len(spectra.Freqs))
+
+	spectra = spectra.HighPass()
+	//s = fmt.Sprintf("%s -> highPass=%d", s, len(spectra.Freqs))
+
+	//log.Println(s)
 
 	//fp := fingerprint.NewChromaprint(Pxx, freqs)
-	fp := fingerprint.NewChromaprint(Pxx, freqs)
+	fp := fingerprint.NewChromaprint(spectra)
 	
 	if fp == nil {
 		return nil

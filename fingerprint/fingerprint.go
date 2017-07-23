@@ -1,14 +1,14 @@
 package fingerprint
 
+
 type Fingerprinter interface {
 	Fingerprint() []byte
 }
 
 // Apply an approximation to the frequency to help with inacuracies with matching later
 func fuzzyFreq(f float64) float64 {
-	return float64(int(f/10 + 0.5)*10)
+	return float64(int(f*10 + 0.5))/10
 	//fuzzyFreq -= fuzzyFreq%2
-
 }
 
 /*

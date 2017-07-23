@@ -6,6 +6,7 @@ import (
 	"io"
 	"crypto/sha1"
 	"math"
+	"github.com/snuffpuppet/spectre/analysis"
 )
 
 // Chroma based Fingerprint info on a block of audio data
@@ -119,29 +120,28 @@ func (t Transcription) String() string {
 	return s
 }
 
-func (t Transcription) meanStrength() (m float64) {
-	m = 0.0
-	for _, v := range t {
-		m += v.Strength
+func newTranscription() (t Transcription) {
+	t = make([]Chroma, MAX_NOTE)
+	for i := range t {
+		t[i].Note = note(i)
 	}
-	m /= float64(len(t))
 
 	return
 }
 
 // Convert the frequency/power data into buckets of musical notes based on strength of signal
-func transcribe(freqs, Pxx []float64) (t Transcription) {
+func transcribe(s analysis.Spectra) (t Transcription) {
 	chromaCount := 0
-	t = make([]Chroma, MAX_NOTE)
-	for i, v := range freqs {
+	t = newTranscription()
+
+	for i, v := range s.Freqs {
 		n := freqNote(v)
-		if Pxx[i] > t[n].Strength {
-			//log.Printf("*** Set %d(%s) -> %.1f(%.1f)\n", n, note(n), v, Pxx[i])
+		if s.Pxx[i] > t[n].Strength {
 			t[n].Note = note(n)
 			t[n].Freq = fuzzyFreq(v)
-			t[n].Strength = Pxx[i]
+			t[n].Strength = s.Pxx[i]
 			chromaCount++
-		} else {
+		//} else {
 				//fmt.Printf("*** Rejected: %f(%.2f)\n", fuzzyFreq(v), Pxx[i])
 		}
 
@@ -189,32 +189,9 @@ func audioKey(t Transcription) (key []byte) {
 	return
 }
 
-func highPassFilter(t Transcription) (Transcription) {
-	if t == nil {
-		return t
-	}
-
-	mean := t.meanStrength()
-	//log.Printf("highPassFIlter: mean = %f\n", mean)
-
-	f := make([]Chroma, MAX_NOTE)
-
-	for i, v := range t {
-		f[i] = t[i]
-		if v.Strength < mean {
-			f[i].Strength, f[i].Freq = 0, 0
-		}
-	}
-
-	return f
-}
-
-func NewChromaprint(Pxx, freqs []float64) (*Chromaprint) {
-	transcription := transcribe(freqs, Pxx)
+func NewChromaprint(s analysis.Spectra) (*Chromaprint) {
+	transcription := transcribe(s)
 	//log.Printf("NewChromaPrint1: %s\n", transcription)
-
-	transcription = highPassFilter(transcription)
-	//log.Printf("NewChromaPrint2: %s\n", transcription)
 
 	key := audioKey(transcription)
 	//log.Printf("fp key: %s\n", key)

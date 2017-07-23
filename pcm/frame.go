@@ -6,6 +6,14 @@ type Frame struct {
 	blockId		int
 }
 
+func NewFrame(data []int16, blockId, sampleRate int) Frame {
+	return Frame {
+		data: data,
+		blockId: blockId,
+		timestamp: float64(blockId * len(data)) / float64(sampleRate),
+	}
+}
+
 func (f Frame) AsFloat64() (f64 []float64) {
 	f64 = make([]float64, len(f.data))
 	for i, x := range f.data {
