@@ -16,8 +16,8 @@ type SpectralAnalyser func([]float64, int) Spectra
 func Pwelch(samples []float64, sampleRate int) Spectra {
 	// 'block' contains our data block, get a spectral analysis of this section of the audio
 	var opts spectral.PwelchOptions // default values are used
-	opts.Noverlap = 512
-	opts.NFFT = 1024
+	opts.Noverlap = 384
+	opts.NFFT = 512
 	opts.Scale_off = true
 
 	Pxx, freqs := spectral.Pwelch(samples, float64(sampleRate), &opts)
@@ -33,7 +33,7 @@ func Pwelch(samples []float64, sampleRate int) Spectra {
 		}
 	}
 
-	return Spectra { Freqs: freqs, Pxx: Pxx }
+	return NewSpectra(freqs, Pxx)
 }
 
 /*
@@ -121,7 +121,7 @@ func Amplitude(samples []float64, sampleRate int) Spectra {
 		freqs[i] = float64(i) * coef
 	}
 
-	return Spectra { Freqs: freqs, Pxx: Pxx }
+	return NewSpectra(freqs, Pxx)
 }
 
 

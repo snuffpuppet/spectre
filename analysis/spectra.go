@@ -26,7 +26,7 @@ func (s Spectra) Maxima() Spectra {
 		}
 	}
 
-	return Spectra{ Freqs: freqs, Pxx: pxx }
+	return NewSpectra(freqs, pxx)
 }
 
 func (s Spectra) Filter(lowFreq, highFreq, lowPower float64) Spectra {
@@ -41,7 +41,7 @@ func (s Spectra) Filter(lowFreq, highFreq, lowPower float64) Spectra {
 
 	//log.Printf("filter: %d samples -> %d\n", len(Freqs), len(nfreqs))
 
-	return Spectra { Freqs: nfreqs, Pxx: nPxx }
+	return NewSpectra(nfreqs, nPxx)
 }
 
 // filter out all the signals with a strength lower than the mean strength of all the samples
@@ -59,7 +59,7 @@ func (s Spectra) HighPass() (Spectra) {
 		}
 	}
 
-	return Spectra { Freqs: nfreqs, Pxx: nPxx }
+	return NewSpectra(nfreqs, nPxx)
 }
 
 // Calculate the mean strength of all the samples in the spectra
@@ -73,6 +73,12 @@ func (s Spectra) meanStrength() (m float64) {
 	return
 }
 
+func NewSpectra(freqs, pxx []float64) Spectra {
+	return Spectra{
+		Pxx: pxx,
+		Freqs: freqs,
+	}
+}
 
 // check if x satisfies the criteria for a local maxima
 func lmax(v1, v2, x, v4, v5 float64) bool {

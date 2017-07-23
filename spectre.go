@@ -21,15 +21,26 @@ const (
 	SA_PWELCH = iota
 	SA_BESPOKE = iota
 )
+/* - these with -bespoke using NFFT=512 (256 unique buckets) work best so far
+// With LFC = 1000.0
+//      UFC = 2000.0
+//      TDT = 0.5
+//      SILENCE = 30.0 (both)
 
 const SAMPLE_RATE = 11025
-const BLOCK_SIZE  = 4096
+const BLOCK_SIZE  = 2048
+*/
+
+const SAMPLE_RATE = 11025
+const BLOCK_SIZE  = 2048
+
+const BLOCKS_PER_SECOND = SAMPLE_RATE / BLOCK_SIZE
 
 //const REQUIRED_CANDIDATES = 4 	// required number of frequency candidates for a fingerprint entry
-const LOWER_FREQ_CUTOFF = 318.0		// Lowest frequency acceptable for matching
+const LOWER_FREQ_CUTOFF = 1000.0	// Lowest frequency acceptable for matching
 const UPPER_FREQ_CUTOFF = 2000.0	// Highest frequency acceptable for matching
 
-const TIME_DELTA_THRESHOLD = 0.2	// required minimum time diff between freq matches to be considered a hit
+const TIME_DELTA_THRESHOLD = 0.5	// required minimum time diff between freq matches to be considered a hit
 
 const FILE_SILENCE_THRESHOLD = 30.0
 const MIC_SILENCE_THRESHOLD = 30.0
@@ -89,7 +100,7 @@ func getFingerprint(analyser analysis.SpectralAnalyser, samples []float64, silen
 	spectra = spectra.Maxima()
 	//s = fmt.Sprintf("%s -> maxima=%d", s, len(spectra.Freqs))
 
-	spectra = spectra.HighPass()
+	//spectra = spectra.HighPass()
 	//s = fmt.Sprintf("%s -> highPass=%d", s, len(spectra.Freqs))
 
 	//log.Println(s)
@@ -185,7 +196,7 @@ func listen(audioMappings audiomatcher.Matches, analyser analysis.SpectralAnalys
 			matcher.Register(fp, frame.Timestamp())
 
 			// Check every second to see if they are certain enough to be a match
-			if frame.BlockId() % 10 == 0 {
+			if frame.BlockId() % BLOCKS_PER_SECOND == 0 {
 				hits := matcher.GetHits(TIME_DELTA_THRESHOLD)
 				if len(hits) > 0 {
 					fmt.Println(hits)
