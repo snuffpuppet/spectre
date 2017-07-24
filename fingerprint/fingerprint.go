@@ -1,5 +1,23 @@
 package fingerprint
 
+import (
+	"github.com/snuffpuppet/spectre/analysis"
+)
+
+const SAMPLE_RATE = 11025
+const BLOCK_SIZE  = 2048
+
+const BLOCKS_PER_SECOND = SAMPLE_RATE / BLOCK_SIZE
+
+//const REQUIRED_CANDIDATES = 4 	// required number of frequency candidates for a fingerprint entry
+const LOWER_FREQ_CUTOFF = 1000.0	// Lowest frequency acceptable for matching
+const UPPER_FREQ_CUTOFF = 2000.0	// Highest frequency acceptable for matching
+
+const TIME_DELTA_THRESHOLD = 0.5	// required minimum time diff between freq matches to be considered a hit
+
+const FILE_SILENCE_THRESHOLD = 30.0
+const MIC_SILENCE_THRESHOLD = 30.0
+
 
 type Fingerprinter interface {
 	Fingerprint() []byte
@@ -9,6 +27,34 @@ type Fingerprinter interface {
 func fuzzyFreq(f float64) float64 {
 	return float64(int(f*10 + 0.5))/10
 	//fuzzyFreq -= fuzzyFreq%2
+}
+
+func Generate(analyser analysis.SpectralAnalyser, samples []float64, silenceThreshold float64) (Fingerprinter) {
+	//s := ""
+
+	spectra := analyser(samples, SAMPLE_RATE)
+	//log.Printf("Raw Samples:\n%v\n%v\n\n", spectra.Freqs, spectra.Pxx)
+	//s = fmt.Sprintf("%s -> samples=%d", s, len(spectra.Freqs))
+
+	spectra = spectra.Filter(LOWER_FREQ_CUTOFF, UPPER_FREQ_CUTOFF, silenceThreshold)
+	//s = fmt.Sprintf("%s -> audible=%d", s, len(spectra.Freqs))
+
+	spectra = spectra.Maxima()
+	//s = fmt.Sprintf("%s -> maxima=%d", s, len(spectra.Freqs))
+
+	//spectra = spectra.HighPass()
+	//s = fmt.Sprintf("%s -> highPass=%d", s, len(spectra.Freqs))
+
+	//log.Println(s)
+
+	//fp := fingerprint.NewChromaprint(Pxx, freqs)
+	fp := NewChromaprint(spectra)
+
+	if fp == nil {
+		return nil
+	}
+
+	return fp
 }
 
 /*

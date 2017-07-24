@@ -1,5 +1,14 @@
 package pcm
 
+type Reader interface {
+	Read() (*Frame, error)
+}
+
+type StartReader interface {
+	Reader
+	Start() error
+}
+
 type Frame struct {
 	data 		[]int16
 	timestamp	float64
