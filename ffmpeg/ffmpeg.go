@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strconv"
 	"io"
+	"log"
 )
 
 const (
@@ -70,7 +71,7 @@ func Cmd(filename, containerType, pcmDataType string, sampleRate int) (*exec.Cmd
 
 	cmd := exec.Command("ffmpeg", args...)
 
-	//log.Printf("ffmpeg %s", args)
+	log.Printf("ffmpeg %s", args)
 
 	return cmd, nil
 }

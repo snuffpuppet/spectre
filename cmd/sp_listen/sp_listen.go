@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"github.com/snuffpuppet/spectre/analysis"
+	"github.com/snuffpuppet/spectre/spectral"
 	"log"
 	"os"
 	"fmt"
@@ -14,7 +14,7 @@ import (
 	"github.com/snuffpuppet/spectre/lookup"
 )
 
-func loadFiles(filenames []string, analyser analysis.SpectralAnalyser, optVerbose bool) (matches lookup.Matches, err error) {
+func loadFiles(filenames []string, analyser spectral.Analyser, optVerbose bool) (matches lookup.Matches, err error) {
 
 	matches = lookup.New()
 
@@ -33,7 +33,7 @@ func loadFiles(filenames []string, analyser analysis.SpectralAnalyser, optVerbos
 	return matches, nil
 }
 
-func listen(stream pcm.StartReader, matcher *audiomatcher.AudioMatcher, analyser analysis.SpectralAnalyser, optVerbose bool) error {
+func listen(stream pcm.StartReader, matcher *audiomatcher.AudioMatcher, analyser spectral.Analyser, optVerbose bool) error {
 	sig := make(chan os.Signal, 1)
 	signal.Notify(sig, os.Interrupt, os.Kill)
 
@@ -62,10 +62,11 @@ func listen(stream pcm.StartReader, matcher *audiomatcher.AudioMatcher, analyser
 
 			// Check every second to see if they are certain enough to be a match
 			if frame.BlockId() % fingerprint.BLOCKS_PER_SECOND == 0 {
-				hits := matcher.GetHits()
-				if len(hits) > 0 {
+				log.Printf("(%.2f) %s\n", frame.Timestamp(), matcher.Stats())
+				//hits := matcher.GetHits()
+				//if len(hits) > 0 {
 					//fmt.Println(hits)
-				}
+				//}
 			}
 		}
 
@@ -78,7 +79,7 @@ func listen(stream pcm.StartReader, matcher *audiomatcher.AudioMatcher, analyser
 
 }
 
-func loadStream(filename string, stream pcm.Reader, matches lookup.Matches, analyser analysis.SpectralAnalyser, optVerbose bool) (lookup.Matches, error){
+func loadStream(filename string, stream pcm.Reader, matches lookup.Matches, analyser spectral.Analyser, optVerbose bool) (lookup.Matches, error){
 	clashCount, fpCount := 0, 0
 	for {
 		frame, err := stream.Read()
@@ -128,7 +129,7 @@ func printStatus(fp fingerprint.Fingerprinter, frame *pcm.Frame, verbose bool) {
 func main() {
 	var optVerbose bool
 	var optAnalyser, optInput string
-	var analyser analysis.SpectralAnalyser
+	var analyser spectral.Analyser
 
 	flag.BoolVar(&optVerbose, "verbose", false, "Verbose output of spectral analysis data")
 	flag.StringVar(&optAnalyser, "analyser", "bespoke", "Spectral analyser to use (pwelch | bespoke)")
@@ -138,9 +139,9 @@ func main() {
 
 	switch optAnalyser {
 	case "bespoke":
-		analyser = analysis.Amplitude
+		analyser = spectral.Amplitude
 	case "pwelch":
-		analyser = analysis.Pwelch
+		analyser = spectral.Pwelch
 	default:
 		flag.PrintDefaults()
 		log.Fatalf("Unrecognised spectral analyser requested: '%s'", optAnalyser)

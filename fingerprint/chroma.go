@@ -6,7 +6,7 @@ import (
 	"io"
 	"crypto/sha1"
 	"math"
-	"github.com/snuffpuppet/spectre/analysis"
+	"github.com/snuffpuppet/spectre/spectral"
 )
 
 // Chroma based Fingerprint info on a block of audio data
@@ -130,7 +130,7 @@ func newTranscription() (t Transcription) {
 }
 
 // Convert the frequency/power data into buckets of musical notes based on strength of signal
-func transcribe(s analysis.Spectra) (t Transcription) {
+func transcribe(s spectral.Spectra) (t Transcription) {
 	chromaCount := 0
 	t = newTranscription()
 
@@ -189,7 +189,7 @@ func audioKey(t Transcription) (key []byte) {
 	return
 }
 
-func NewChromaprint(s analysis.Spectra) (*Chromaprint) {
+func NewChromaprint(s spectral.Spectra) (*Chromaprint) {
 	transcription := transcribe(s)
 	//log.Printf("NewChromaPrint1: %s\n", transcription)
 

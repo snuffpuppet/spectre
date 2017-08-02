@@ -1,28 +1,28 @@
-package analysis
+package spectral
 
 import (
 	"math"
 	"math/cmplx"
 	"github.com/mjibson/go-dsp/fft"
 	"github.com/mjibson/go-dsp/window"
-	"github.com/mjibson/go-dsp/spectral"
+	dsp "github.com/mjibson/go-dsp/spectral"
 )
 
-type SpectralAnalyser func([]float64, int) Spectra
+type Analyser func(samples []float64, fs, nfft, noverlap int, dbScaling bool) Spectra
 
 /*
  * Use the PWelch algorithm to determine Spectral Density of the time series data
  */
-func Pwelch(samples []float64, sampleRate int) Spectra {
+func Pwelch(samples []float64, fs, nfft, noverlap int, dbScaling bool) Spectra {
 	// 'block' contains our data block, get a spectral analysis of this section of the audio
-	var opts spectral.PwelchOptions // default values are used
-	opts.Noverlap = 384
-	opts.NFFT = 512
+	var opts dsp.PwelchOptions // default values are used
+	opts.Noverlap = noverlap
+	opts.NFFT = nfft
 	opts.Scale_off = true
 
-	Pxx, freqs := spectral.Pwelch(samples, float64(sampleRate), &opts)
+	Pxx, freqs := dsp.Pwelch(samples, float64(fs), &opts)
 
-	if false {
+	if dbScaling {
 		// Now convert Pxx (Power per unit freq) to dB
 		for i, x := range Pxx {
 			if x < 1 {
@@ -67,19 +67,19 @@ func Simple(samples []float64, sampleRate int) (Pxx, freqs []float64) {
 /*
  * Use overlapping windows to adjust for spectral leakage when using the FFT
  */
-func Amplitude(samples []float64, sampleRate int) Spectra {
+func Amplitude(samples []float64, fs, nfft, noverlap int, dbScaling bool) Spectra {
 	// 'block' contains our data block, get a spectral analysis of this section of the audio
 
-	const NFFT = 512
-	const NOVERLAP = 384
+	//const NFFT = 512
+	//const NOVERLAP = 384
 	const NORMALISING_ENABLED = false 	// disable normalising for the moment as it seems to hide strong signals
-	const DB_SCALING = true			// Scale the amplitude output to dB
+	//const DB_SCALING = true			// Scale the amplitude output to dB
 
 	wf := window.Hann
 
-	segs := spectral.Segment(samples, NFFT, NOVERLAP)
+	segs := dsp.Segment(samples, nfft, noverlap)
 
-	lp := NFFT / 2 + 1
+	lp := nfft / 2 + 1
 
 	Pxx := make([]float64, lp)
 
@@ -93,7 +93,7 @@ func Amplitude(samples []float64, sampleRate int) Spectra {
 	}
 
 	if NORMALISING_ENABLED {
-		w := wf(NFFT)
+		w := wf(nfft)
 		var norm float64
 		for _, x := range w {
 			norm += math.Pow(x, 2)
@@ -104,7 +104,7 @@ func Amplitude(samples []float64, sampleRate int) Spectra {
 		}
 	}
 
-	if DB_SCALING {
+	if dbScaling {
 		for i, x := range Pxx {
 			if x < 1 {
 				Pxx[i] = 0
@@ -116,7 +116,7 @@ func Amplitude(samples []float64, sampleRate int) Spectra {
 	}
 	// Calculate and fill out the frequency slice
 	freqs := make([]float64, lp)
-	coef := float64(sampleRate) / float64(NFFT)
+	coef := float64(fs) / float64(nfft)
 	for i := range freqs {
 		freqs[i] = float64(i) * coef
 	}

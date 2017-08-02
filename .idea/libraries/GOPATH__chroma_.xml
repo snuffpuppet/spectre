@@ -33,7 +33,7 @@
       <root url="file://$PROJECT_DIR$/tests" />
       <root url="file://$PROJECT_DIR$/chroma" />
       <root url="file://$PROJECT_DIR$/fingerprint" />
-      <root url="file://$PROJECT_DIR$/analysis" />
+      <root url="file://$PROJECT_DIR$/spectral" />
     </excluded>
   </library>
 </component>

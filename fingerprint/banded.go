@@ -2,119 +2,97 @@ package fingerprint
 
 import (
 	"fmt"
-	"sort"
 	"crypto/sha1"
 	"io"
+	"github.com/snuffpuppet/spectre/spectral"
+	_ "log"
 )
 
-type candidate struct { 
-	Freq float64
-	Pxx float64
-}
-
-type candidates []candidate
-func (c candidates) String() string {
-	var s string
-	for _, v := range c {
-		s += fmt.Sprintf("%9.2f (%.2f)\t", v.Freq, v.Pxx)
-	}
-	return s
-}
-
-type ByPxx []candidate
-func (a ByPxx) Len() int           { return len(a) }
-func (a ByPxx) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
-func (a ByPxx) Less(i, j int) bool { return a[i].Pxx < a[j].Pxx }
-
-type ByFreq []candidate
-func (a ByFreq) Len() int           { return len(a) }
-func (a ByFreq) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
-func (a ByFreq) Less(i, j int) bool { return a[i].Freq < a[j].Freq }
+const NUM_BANDS = 6
 
 // Fingerprint info on a block of audio data
 type Bandedprint struct {
 	key           []byte
-	candidates    candidates
+	bands	      spectral.Spectra
 }
+
 func (b Bandedprint) String() string {
-	return b.candidates.String()
+	return b.bands.String()
 }
 func (b Bandedprint) Fingerprint() []byte {
+	if string(b.key) == "" {
+		hash := sha1.New()
+		for _, v := range b.bands.Freqs {
+			io.WriteString(hash, fmt.Sprintf("%e", v))
+		}
+
+		b.key = hash.Sum(nil)
+
+	}
 	return b.key
+}
+
+func NewBandedprint(spectra spectral.Spectra) (*Bandedprint) {
+	bands := getBandedCandidates(spectra)
+	numBands := 0
+	for x := range bands.Freqs {
+		if x > 0 {
+			numBands++
+		}
+	}
+
+	if numBands < REQUIRED_NUM_CANDIDATES {
+		return nil
+	}
+
+	bp := Bandedprint{
+		bands:	bands,
+	}
+
+	return &bp
 }
 
 // Use a basic frequency banding method for classifying frequencies and choosing candidates for the fingerprint
 // Return the strongest frequency in each of four bands ordered by strength
-func getBandedCandidates(Pxx, freqs []float64) (candidates) {
-	const LOWER_FREQ_CUTOFF = 318.0
-	const UPPER_FREQ_CUTOFF = 2000.0
-	const NUM_BANDS = 6
+func getBandedCandidates(spectra spectral.Spectra) (s spectral.Spectra) {
+	highScores := make([]float64, NUM_BANDS)
+	highPoints := make([]float64, NUM_BANDS)
 
-	candidates := make([]candidate, 0)
-	highScores := make(map[int]float64)
-	highPoints := make(map[int]float64)
-
-	var freqBand = func(f float64) int {
-		//uLimit := 11025.0 / 2.0
-		uLimit := UPPER_FREQ_CUTOFF
-		a := f - LOWER_FREQ_CUTOFF
-		b := uLimit - LOWER_FREQ_CUTOFF
-
-		x := int(a / b * NUM_BANDS + 0.5)
-
-		//fmt.Printf("%.2f => Band %d (a=%.2f, b=%.2f)\n", f, x, a, b)
-		return x
-	}
-
-	// select only those stronger than the power threshold and higher than the frequency threshold
-	for i, v := range Pxx {
-		fb := freqBand(freqs[i])
+	// find strongest frequency in each band
+	//log.Printf("Banded Spectra: len(Pxx), len(Freqs) = %d, %d\n", len(spectra.Pxx), len(spectra.Freqs))
+	for i, v := range spectra.Pxx {
+		//log.Printf("Banded Spectra: i=%d, len(spectra.Freqs=%d", i, len(spectra.Freqs))
+		fb := freqBand(spectra.Freqs[i])
 		if v > highScores[fb] {
-			highPoints[fb] = freqs[i]
+			highPoints[fb] = spectra.Freqs[i]
 			highScores[fb] = v
 		}
 
 	}
 
+	return spectral.NewSpectra(highPoints, highScores)
+}
+
+func meanStrength(c candidates) (mean float64) {
 	// Now get the mean signal strength
-	mean := 0.0
-	for _, v := range highScores {
-		mean += v
+	mean = 0.0
+	for _, v := range c {
+		mean += v.Pxx
 	}
-	mean /= float64(len(highScores))
+	mean /= float64(len(c))
 
-	for k, v := range highScores {
-		if v >= mean {
-			candidates = append(candidates, candidate{Freq: fuzzyFreq(highPoints[k]), Pxx: v})
-		}
-	}
-
-	// Sort by Frequency to adjust for any minor signal strength variance between them
-	sort.Sort(sort.Reverse(ByFreq(candidates)))
-
-	return candidates
+	return
 }
 
-func NewBandedprint(Pxx, freqs []float64) (*Bandedprint) {
-	const REQUIRED_NUM_CANDIDATES = 2
+func freqBand(f float64) int {
+	//uLimit := 11025.0 / 2.0
+	uLimit := UPPER_FREQ_CUTOFF
+	a := f - LOWER_FREQ_CUTOFF
+	b := uLimit - LOWER_FREQ_CUTOFF
 
-	candidates := getBandedCandidates(Pxx, freqs)
-	if len(candidates) < REQUIRED_NUM_CANDIDATES {
-		return nil        // no valid candidates
-	}
+	x := int(a / b * (NUM_BANDS-1) + 0.5)
 
-	// Now copy over the ones that we are interested in and populate the hash string
-	hash := sha1.New()
-	for _, v := range candidates {
-		io.WriteString(hash, fmt.Sprintf("%e", v.Freq))
-	}
-
-	key := hash.Sum(nil)
-
-	bp := Bandedprint{
-		key: 		key,
-		candidates:	candidates,
-	}
-
-	return &bp
+	//log.Printf("%.2f => Band %d (a=%.2f, b=%.2f)\n", f, x, a, b)
+	return x
 }
+

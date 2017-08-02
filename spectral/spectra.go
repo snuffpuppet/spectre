@@ -1,4 +1,6 @@
-package analysis
+package spectral
+
+import "fmt"
 
 type Spectra struct {
 	Pxx	[]float64
@@ -83,4 +85,13 @@ func NewSpectra(freqs, pxx []float64) Spectra {
 // check if x satisfies the criteria for a local maxima
 func lmax(v1, v2, x, v4, v5 float64) bool {
 	return v2 < x && v4 < x && v1 < v2 && v5 < v4
+}
+
+func (x Spectra) String() (s string) {
+	s = ""
+	for i := range x.Freqs {
+		s = fmt.Sprintf("%s[%d] %.2f(%.2f)  ", s, i, x.Freqs[i], x.Pxx[i])
+	}
+
+	return
 }
