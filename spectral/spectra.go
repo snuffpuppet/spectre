@@ -31,11 +31,13 @@ func (s Spectra) Maxima() Spectra {
 	return NewSpectra(freqs, pxx)
 }
 
-func (s Spectra) Filter(lowFreq, highFreq, lowPower float64) Spectra {
+type Filterer func(freq, power float64) bool
+
+func (s Spectra) Filter(f Filterer) Spectra {
 	nPxx := make([]float64, 0, len(s.Pxx))
 	nfreqs := make([]float64, 0, len(s.Freqs))
 	for i, x := range s.Freqs {
-		if x >= lowFreq && x <= highFreq && s.Pxx[i] > lowPower {
+		if f(s.Freqs[i], s.Pxx[i]) {
 			nfreqs = append(nfreqs, x)
 			nPxx = append(nPxx, s.Pxx[i])
 		}

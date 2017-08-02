@@ -16,8 +16,8 @@ const SAMPLE_RATE = 11025
 const BLOCK_SIZE  = 2048
 //const SAMPLE_RATE = 44100
 //const BLOCK_SIZE  = 4096
-const NFFT 	  = 512
-const NOVERLAP    = 384
+const NFFT 	  = 1024
+const NOVERLAP    = 768
 const DB_SCALING = true			// Scale the amplitude output to dB
 
 const BLOCKS_PER_SECOND = SAMPLE_RATE / BLOCK_SIZE
@@ -53,7 +53,11 @@ func Generate(analyser spectral.Analyser, samples []float64, silenceThreshold fl
 	//log.Printf("Raw Samples:\n%v\n%v\n\n", spectra.Freqs, spectra.Pxx)
 	//s = fmt.Sprintf("%s -> samples=%d", s, len(spectra.Freqs))
 
-	spectra = spectra.Filter(LOWER_FREQ_CUTOFF, UPPER_FREQ_CUTOFF, silenceThreshold)
+	spectra = spectra.Filter(
+		func(freq, pwr float64) bool {
+			return freq >= LOWER_FREQ_CUTOFF && freq <= UPPER_FREQ_CUTOFF && pwr > silenceThreshold
+		})
+
 	//s = fmt.Sprintf("%s -> audible=%d", s, len(spectra.Freqs))
 
 	spectra = spectra.Maxima()
