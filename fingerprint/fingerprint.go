@@ -17,7 +17,7 @@ const BLOCK_SIZE  = 2048
 //const SAMPLE_RATE = 44100
 //const BLOCK_SIZE  = 4096
 const NFFT 	  = 1024
-const NOVERLAP    = 768
+const NOVERLAP    = 512
 const DB_SCALING = true			// Scale the amplitude output to dB
 
 const BLOCKS_PER_SECOND = SAMPLE_RATE / BLOCK_SIZE

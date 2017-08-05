@@ -1,6 +1,9 @@
 package spectral
 
-import "fmt"
+import (
+	"fmt"
+	"sort"
+)
 
 type Spectra struct {
 	Pxx	[]float64
@@ -24,11 +27,27 @@ func (s Spectra) Maxima() Spectra {
 		if lmax(s.Pxx[i-2], s.Pxx[i-1], s.Pxx[i], s.Pxx[i+1], s.Pxx[i+2]) {
 			freqs = append(freqs, s.Freqs[i])
 			pxx = append(pxx, s.Pxx[i])
-			i += 3				// we can ignore the next 3 since they cannot be a maxima
+			i += 2				// we can ignore the next 3 since they cannot be a maxima
 		}
 	}
 
 	return NewSpectra(freqs, pxx)
+}
+
+func (s Spectra) ByPxx() Spectra {
+	sort.Sort(ByPxx(s))
+	return s
+}
+
+func (s Spectra) Tail(n int) Spectra {
+	if n >= len(s.Freqs) {
+		return s
+	}
+
+	nPxx := append([]float64(nil), s.Pxx[len(s.Pxx)-n-1:]...)
+	nfreqs := append([]float64(nil), s.Freqs[len(s.Freqs)-n-1:]...)
+
+	return NewSpectra(nfreqs, nPxx)
 }
 
 type Filterer func(freq, power float64) bool
@@ -92,8 +111,21 @@ func lmax(v1, v2, x, v4, v5 float64) bool {
 func (x Spectra) String() (s string) {
 	s = ""
 	for i := range x.Freqs {
-		s = fmt.Sprintf("%s[%d] %.2f(%.2f)  ", s, i, x.Freqs[i], x.Pxx[i])
+		s = fmt.Sprintf("%s[%d] %7.2f(%5.2f)  ", s, i, x.Freqs[i], x.Pxx[i])
 	}
 
 	return
 }
+
+type ByPxx Spectra
+func (a ByPxx) Len() int           { return len(a.Freqs) }
+func (a ByPxx) Swap(i, j int)      { a.Freqs[i], a.Freqs[j] = a.Freqs[j], a.Freqs[i]
+	a.Pxx[i], a.Pxx[j] = a.Pxx[j], a.Pxx[i] }
+func (a ByPxx) Less(i, j int) bool { return a.Pxx[i] < a.Pxx[j] }
+
+type ByFreq Spectra
+func (a ByFreq) Len() int           { return len(a.Freqs) }
+func (a ByFreq) Swap(i, j int)      { a.Freqs[i], a.Freqs[j] = a.Freqs[j], a.Freqs[i]
+	a.Pxx[i], a.Pxx[j] = a.Pxx[j], a.Pxx[i] }
+func (a ByFreq) Less(i, j int) bool { return a.Freqs[i] < a.Freqs[j] }
+
