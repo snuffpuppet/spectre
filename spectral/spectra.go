@@ -50,9 +50,7 @@ func (s Spectra) Tail(n int) Spectra {
 	return NewSpectra(nfreqs, nPxx)
 }
 
-type Filterer func(freq, power float64) bool
-
-func (s Spectra) Filter(f Filterer) Spectra {
+func (s Spectra) Filter(f func(freq, power float64) bool) Spectra {
 	nPxx := make([]float64, 0, len(s.Pxx))
 	nfreqs := make([]float64, 0, len(s.Freqs))
 	for i, x := range s.Freqs {
@@ -101,6 +99,25 @@ func NewSpectra(freqs, pxx []float64) Spectra {
 		Pxx: pxx,
 		Freqs: freqs,
 	}
+}
+
+func Maxima(s Spectra) Spectra {
+	freqs := make([]float64, 0, len(s.Freqs))
+	pxx := make([]float64, 0, len(s.Pxx))
+
+	if len(s.Freqs) < 5 {
+		return Spectra{ Freqs: freqs, Pxx: pxx }
+	}
+
+	for i := 2; i < len(s.Pxx) - 2; i++ {
+		if lmax(s.Pxx[i-2], s.Pxx[i-1], s.Pxx[i], s.Pxx[i+1], s.Pxx[i+2]) {
+			freqs = append(freqs, s.Freqs[i])
+			pxx = append(pxx, s.Pxx[i])
+			i += 2				// we can ignore the next 3 since they cannot be a maxima
+		}
+	}
+
+	return NewSpectra(freqs, pxx)
 }
 
 // check if x satisfies the criteria for a local maxima

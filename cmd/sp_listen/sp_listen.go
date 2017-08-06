@@ -58,7 +58,7 @@ func listen(stream pcm.StartReader, matcher *audiomatcher.AudioMatcher, analyser
 
 			printStatus(fp, frame, optVerbose)
 
-			matcher.Register(fp, frame.Timestamp())
+			matcher.Register(fingerprint.Hash(fp.Fingerprint()), frame.Timestamp())
 
 			// Check every second to see if they are certain enough to be a match
 			if frame.BlockId() % fingerprint.BLOCKS_PER_SECOND == 0 {
@@ -101,10 +101,11 @@ func loadStream(filename string, stream pcm.Reader, matches lookup.Matches, anal
 			}
 			matches[string(fp.Fingerprint())] = audiomatcher.Match{filename, frame.Timestamp()}
 */
-			if _, ok := matches.Lookup(fp.Fingerprint()); ok {
+			key := fingerprint.Hash(fp.Fingerprint())
+			if _, ok := matches.Lookup(key); ok {
 				clashCount++
 			}
-			matches.Add(fp.Fingerprint(), filename, frame.Timestamp())
+			matches.Add(key, filename, frame.Timestamp())
 		}
 	}
 
@@ -113,7 +114,7 @@ func loadStream(filename string, stream pcm.Reader, matches lookup.Matches, anal
 	return matches, nil
 }
 
-func printStatus(fp fingerprint.Fingerprinter, frame *pcm.Frame, verbose bool) {
+func printStatus(fp fmt.Stringer, frame *pcm.Frame, verbose bool) {
 	if verbose {
 		header := fmt.Sprintf("[%4d:%6.2f]", frame.BlockId(), frame.Timestamp())
 		if fp == nil {

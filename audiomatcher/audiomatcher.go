@@ -27,9 +27,6 @@ type audioHit struct {
 
 type audioHits []audioHit
 
-type Fingerprinter interface {
-	Fingerprint() []byte
-}
 
 func (a audioHits) String() (s string) {
 	s = ""
@@ -57,8 +54,8 @@ func New(mappings lookup.Matches, timeThreshold float64) (*AudioMatcher) {
 }
 
 // register a fingerprint with the audio matcher in order to log the timestamps
-func (matcher *AudioMatcher) Register(fp Fingerprinter, ts float64) {
-	fpm, ok := matcher.FingerprintLib[string(fp.Fingerprint())]
+func (matcher *AudioMatcher) Register(key []byte, ts float64) {
+	fpm, ok := matcher.FingerprintLib[string(key)]
 	if !ok {
 		return
 	}
