@@ -28,5 +28,5 @@ Part of the problem is peaks in music file that are out of the sensitivity range
 or speakers. A frequency filter which improves things and increases hit rate but most of the fingerprints still do not match.
 
 ## Next Steps
-
+It seems that fingerprinting a 10ms frame by picking the strongest frequencies is not a good matching strategey, especially for film soundtracks with a lot of voice. Using Dejavu's strategy of picking strong frequencies in a 2d array of multiple slices of time will work better
 
